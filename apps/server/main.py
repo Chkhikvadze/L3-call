@@ -27,6 +27,7 @@ from controllers.tool import router as tool_router
 from controllers.llm import router as llm_router
 from controllers.chat import router as chat_router
 from controllers.file import router as file_router
+from controllers.call import router as call_router
 from resolvers.account import AccountQuery, AccountMutation
 from resolvers.user import UserQuery, UserMutation
 from strawberry.fastapi import BaseContext, GraphQLRouter
@@ -49,6 +50,7 @@ class Query(AccountQuery, UserQuery):
 @strawberry.type
 class Mutation(AccountMutation, UserMutation):
     pass
+
 
 
 
@@ -115,6 +117,7 @@ app.include_router(tool_router, prefix="/tool")
 app.include_router(llm_router, prefix="/llm")
 app.include_router(chat_router, prefix="/chat")
 app.include_router(file_router, prefix="/file")
+app.include_router(call_router, prefix="/call")
 
 
 @app.get("/")
