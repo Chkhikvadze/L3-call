@@ -94,3 +94,22 @@ class ApiKeyNotFoundException(DatasourceException):
 
 class PlannerEmptyTasksException(AppBaseException):
     pass
+
+
+class ScheduleException(AppBaseException):
+    pass
+
+class ScheduleNotFoundException(DatasourceException):
+    pass
+
+class ContactException(AppBaseException):
+    pass
+
+class ContactNotFoundException(DatasourceException):
+    pass
+
+class GroupException(AppBaseException):
+    pass
+
+class GroupNotFoundException(DatasourceException):
+    pass
