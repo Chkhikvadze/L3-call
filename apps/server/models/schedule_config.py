@@ -27,7 +27,7 @@ class ScheduleConfigModel(BaseModel):
     key = Column(String, index=True)
     value = Column(Text)
     
-    schedule = relationship("ScheduleMode;", back_populates="configs", cascade="all, delete")
+    schedule = relationship("ScheduleModel", back_populates="configs", cascade="all, delete")
     
     created_by = Column(UUID, ForeignKey('user.id', name='fk_created_by', ondelete='CASCADE'), nullable=True, index=True)
     modified_by = Column(UUID, ForeignKey('user.id', name='fk_modified_by', ondelete='CASCADE'), nullable=True, index=True)
@@ -52,7 +52,7 @@ class ScheduleConfigModel(BaseModel):
 
         Args:
             db (Session): The database session.
-            schedule (ScheduleMode;): The schedule object.
+            schedule (ScheduleModel): The schedule object.
             update_configs (ConfigInput): The updated configurations.
 
         Returns:
