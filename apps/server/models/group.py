@@ -5,10 +5,8 @@ import uuid
 from sqlalchemy import Column, String, Boolean, UUID, func, or_, ForeignKey, Index
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel
-from typings.group import GroupInput, GroupStatus
+from typings.group import GroupInput
 from exceptions import GroupNotFoundException
-from groups.base import GroupType
-
 class GroupModel(BaseModel):
     """
     Represents an group entity.
@@ -28,7 +26,7 @@ class GroupModel(BaseModel):
 
     id = Column(UUID, primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String)
-    description = Column(Stringnullable=True, )
+    description = Column(String, nullable=True)
     is_deleted = Column(Boolean, default=False, index=True)
     workspace_id = Column(UUID, ForeignKey('workspace.id', ondelete='CASCADE'), nullable=True, index=True)
     account_id = Column(UUID, ForeignKey('account.id', ondelete='CASCADE'), nullable=True, index=True)

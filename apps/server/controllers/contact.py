@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from models.contact import ContactModel
 from models.config import ConfigModel
-from typings.contact import ContactOutput, ContactInput, ContactSQLTableOutput
+from typings.contact import ContactOutput, ContactInput
 from utils.auth import authenticate
 from typings.auth import UserAccount
 from utils.contact import convert_contacts_to_contact_list, convert_model_to_response

@@ -28,6 +28,9 @@ from controllers.llm import router as llm_router
 from controllers.chat import router as chat_router
 from controllers.file import router as file_router
 from controllers.call import router as call_router
+from controllers.contact import router as contact_router
+from controllers.schedule import router as schedule_router
+from controllers.group import router as group_router
 from resolvers.account import AccountQuery, AccountMutation
 from resolvers.user import UserQuery, UserMutation
 from strawberry.fastapi import BaseContext, GraphQLRouter
@@ -118,6 +121,9 @@ app.include_router(llm_router, prefix="/llm")
 app.include_router(chat_router, prefix="/chat")
 app.include_router(file_router, prefix="/file")
 app.include_router(call_router, prefix="/call")
+app.include_router(contact_router, prefix="/contact")
+app.include_router(schedule_router, prefix="/schedule")
+app.include_router(group_router, prefix="/group")
 
 
 @app.get("/")

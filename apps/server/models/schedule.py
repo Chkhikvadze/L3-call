@@ -36,6 +36,7 @@ class ScheduleModel(BaseModel):
     name = Column(String)
     description = Column(String, nullable=True)
     schedule_type = Column(String) # `Outbound & Inbound`
+    cron_expression = Column(String)
     max_daily_budget =  Column(Numeric(precision=5, scale=2), nullable=True)
     is_active = Column(Boolean, default=True, index=True)
     is_deleted = Column(Boolean, default=False, index=True)
