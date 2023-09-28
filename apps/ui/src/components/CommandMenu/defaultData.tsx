@@ -94,14 +94,14 @@ export const defaultData = (path_id?: any) => {
       ),
     },
 
-    {
-      id: uuidv4(),
-      name: 'General',
-      url: '/chat',
-      option: 'open-chat',
-      group_name: 'chat',
-      icon: <Home />,
-    },
+    // {
+    //   id: uuidv4(),
+    //   name: 'General',
+    //   url: '/chat',
+    //   option: 'open-chat',
+    //   group_name: 'chat',
+    //   icon: <Home />,
+    // },
 
     // {
     //   id: uuidv4(),
@@ -144,6 +144,20 @@ export const defaultData = (path_id?: any) => {
       option: 'modal',
       group_name: 'go_to',
       icon: <About />,
+    },
+    {
+      id: uuidv4(),
+      name: 'Dark',
+      option: 'theme',
+      group_name: 'go_to',
+      icon: <Add />,
+    },
+    {
+      id: uuidv4(),
+      name: 'Light',
+      option: 'theme',
+      group_name: 'go_to',
+      icon: <Add />,
     },
   ]
 }

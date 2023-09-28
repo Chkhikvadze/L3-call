@@ -33,7 +33,7 @@ const RootLayout = () => {
         {user && <Spotlight />}
       </StyledChatInputWrapper>
 
-      {user && <ChatSwitcher isChatOpen={isCheckedRoute} />}
+      {/* {user && <ChatSwitcher isChatOpen={isCheckedRoute} />} */}
     </>
   )
 }
@@ -56,7 +56,7 @@ const StyledChatInputWrapper = styled.div<{ isHidden: boolean }>`
     `};
 `
 const StyledFirstName = styled.span`
-  color: #fff;
+  color: ${({ theme }) => theme.body.textColorSecondary};
   @media (max-width: 1100px) {
     display: none;
   }

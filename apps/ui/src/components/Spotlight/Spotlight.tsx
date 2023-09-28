@@ -197,19 +197,18 @@ const Spotlight = () => {
                 active={showPlugins}
                 onClick={() => setShowPlugins(!showPlugins)}
               /> */}
-                <Search size={28} />
+                <StyledSearchIcon size={28} />
               </StyledIconWrapper>
 
               <StyledInputWrapper onClick={handleChatClick}>
                 {!expanded && (
-                  <>
+                  <StyledText>
                     <Typography
                       value={'Search'}
                       type={Typography.types.LABEL}
                       size={Typography.sizes.sm}
-                      customColor={'rgba(255, 255, 255, 0.4)'}
                     />
-                  </>
+                  </StyledText>
                 )}
                 {
                   <>
@@ -573,4 +572,14 @@ const StyledTypewriterWrapper = styled.div`
 `
 const StyledIconWrapper = styled.div`
   opacity: 0.6;
+`
+
+const StyledSearchIcon = styled(Search)`
+  path {
+    fill: ${({ theme }) => theme.body.iconColor};
+  }
+`
+
+const StyledText = styled.div`
+  color: ${({ theme }) => theme.body.placeHolderColor};
 `

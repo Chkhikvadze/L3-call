@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Button from '@l3-lib/ui-core/dist/Button'
 
@@ -55,32 +55,41 @@ const TeamOfAgentCard = ({
             textSizeRatio={1.5}
             avatar={creator.avatar}
           />
-
-          <Typography
-            value={creator.name}
-            type={Typography.types.P}
-            size={Typography.sizes.xss}
-            customColor={'rgba(255,255,255, 0.6)'}
-          />
+          <StyledCreatorNameWrapper>
+            <Typography
+              value={creator.name}
+              type={Typography.types.P}
+              size={Typography.sizes.xss}
+              // customColor={'rgba(255,255,255, 0.6)'}
+            />
+          </StyledCreatorNameWrapper>
         </StyledCreatorWrapper>
       </StyledMainAvatarWrapper>
       <StyledBody>
-        <Heading type={Heading.types.h1} value={name} customColor={'#FFF'} size='medium' />
-        <Typography
-          value={shortDescription}
-          type={Typography.types.P}
-          size={Typography.sizes.sm}
-          customColor={'rgba(255,255,255, 0.8)'}
-        />
+        <StyledTextWrapper>
+          <Heading type={Heading.types.h1} value={name} size='medium' />
+        </StyledTextWrapper>
+
+        <StyledShortDescription>
+          <Typography
+            value={shortDescription}
+            type={Typography.types.P}
+            size={Typography.sizes.sm}
+            // customColor={'rgba(255,255,255, 0.8)'}
+          />
+        </StyledShortDescription>
 
         {teamAgents?.length > 0 && (
           <StyledRowWrapper>
-            <Typography
-              value={'Agents'}
-              type={Typography.types.P}
-              size={Typography.sizes.md}
-              customColor={'#FFF'}
-            />
+            <StyledTextWrapper>
+              <Typography
+                value={'Agents'}
+                type={Typography.types.P}
+                size={Typography.sizes.md}
+                // customColor={'#FFF'}
+              />
+            </StyledTextWrapper>
+
             <StyledAvatarsContainer>
               {teamAgents?.map((teamAgents: any) => {
                 const { id, agent } = teamAgents
@@ -97,18 +106,22 @@ const TeamOfAgentCard = ({
 
         {teamType && (
           <StyledRowWrapper>
-            <Typography
-              value={'Type'}
-              type={Typography.types.P}
-              size={Typography.sizes.md}
-              customColor={'#FFF'}
-            />
-            <Typography
-              value={teamType}
-              type={Typography.types.P}
-              size={Typography.sizes.xss}
-              customColor={'rgba(255,255,255,0.8)'}
-            />
+            <StyledTextWrapper>
+              <Typography
+                value={'Type'}
+                type={Typography.types.P}
+                size={Typography.sizes.md}
+                // customColor={'#FFF'}
+              />
+            </StyledTextWrapper>
+            <StyledShortDescription>
+              <Typography
+                value={teamType}
+                type={Typography.types.P}
+                size={Typography.sizes.xss}
+                // customColor={'rgba(255,255,255,0.8)'}
+              />
+            </StyledShortDescription>
           </StyledRowWrapper>
         )}
       </StyledBody>
@@ -144,7 +157,7 @@ const TeamOfAgentCard = ({
                 onClick={onViewClick}
                 icon={() => (
                   <StyledIconWrapper>
-                    <EyeOpen size={50} />
+                    <StyledEyeOpenIcon size={50} />
                   </StyledIconWrapper>
                 )}
                 size={Button.sizes.SMALL}
@@ -183,9 +196,8 @@ const StyledCard = styled.div`
   /* padding-top: 30px; */
 
   border-radius: 10px;
-  /* background: rgba(0, 0, 0, 0.5); */
-  background: rgba(0, 0, 0, 0.2);
-
+  border: ${({ theme }) => theme.body.border};
+  background: ${({ theme }) => theme.body.backgroundColorSecondary};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -236,13 +248,19 @@ const StyledIconWrapper = styled.div`
   /* color: #000; */
   color: transparent;
 `
-const StyledInnerButtonWrapper = styled.div`
+export const StyledInnerButtonWrapper = styled.div<{ secondary?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   gap: 10px;
   padding: 10px 18px;
+
+  ${p =>
+    p.secondary &&
+    css`
+      padding: 5px;
+    `};
 `
 
 const StyledRowWrapper = styled.div`
@@ -256,7 +274,6 @@ const StyledBody = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-
   gap: 8px;
 `
 
@@ -264,11 +281,27 @@ const StyledAvatarsContainer = styled.div`
   display: flex;
   align-items: center;
 `
-const StyledChatButtonWrapper = styled.div`
+export const StyledChatButtonWrapper = styled.div`
   margin-left: auto;
 `
 const StyledCreatorWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  color: ${({ theme }) =>
+    theme.body.backgroundColorPrimary === 'rgb(255, 255, 255)' ? 'red' : 'rgba(0, 0, 0, 0.2)'};
+`
+const StyledTextWrapper = styled.div`
+  color: ${({ theme }) => theme.body.textColorSecondary};
+`
+const StyledShortDescription = styled.div`
+  color: ${({ theme }) => theme.body.textColorSecondary};
+`
+const StyledCreatorNameWrapper = styled.div`
+  color: ${({ theme }) => theme.body.textColorSecondary};
+`
+const StyledEyeOpenIcon = styled(EyeOpen)`
+  path {
+    stroke: ${({ theme }) => theme.body.iconColor};
+  }
 `

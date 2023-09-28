@@ -28,27 +28,30 @@ const GetStartedContainer = ({
       <StyledHeader>
         <StyledColumn>
           <StyledCloseButton onClick={() => setShow(false)}>
-            <Close />
+            <StyledCloseIcon />
           </StyledCloseButton>
           {!noText && (
-            <Heading
+            <StyledHeading
               type={Heading.types.h1}
               value='Get Started'
               size='medium'
-              customColor={'#fff'}
+              // customColor={'#fff'}
             />
           )}
         </StyledColumn>
         {!noText && (
           <StyledColumn>
-            <Typography
-              value='Learn'
-              type={Typography.types.LABEL}
-              size={Typography.sizes.sm}
-              customColor={'rgba(255, 255, 255, 0.6)'}
-            />
+            <StyledTypographyWrapper>
+              <Typography
+                value='Learn'
+                type={Typography.types.LABEL}
+                size={Typography.sizes.sm}
+                // customColor={'rgba(255, 255, 255, 0.6)'}
+              />
+            </StyledTypographyWrapper>
+
             <StyledIconWrapper>
-              <Connect />
+              <StyledConnectIcon />
             </StyledIconWrapper>
           </StyledColumn>
         )}
@@ -108,4 +111,23 @@ const StyledDragScroll = styled(ScrollContainer)`
 `
 const StyledCloseButton = styled.div`
   cursor: pointer;
+`
+
+const StyledHeading = styled(Heading)`
+  color: ${({ theme }) => theme.body.textColorSecondary};
+`
+const StyledTypographyWrapper = styled.div`
+  color: ${({ theme }) => theme.body.mainNavColor};
+`
+
+const StyledCloseIcon = styled(Close)`
+  path {
+    stroke: ${({ theme }) => theme.body.iconColor};
+  }
+`
+
+const StyledConnectIcon = styled(Connect)`
+  path {
+    stroke: ${({ theme }) => theme.body.iconColor};
+  }
 `
