@@ -491,6 +491,7 @@ const StyledWrapper = styled.div`
   transition: background-color 300ms ease-in-out;
   position: relative;
   margin: 0 auto;
+  // border: 1px solid red;
   /* padding-bottom: 50px; */
   /* height: calc(100% - 80px); */
   /* margin-bottom: 100px; */
@@ -504,7 +505,7 @@ const StyledMessages = styled.main`
   flex-direction: column;
   align-items: center;
   /* margin-bottom: 80px; // To make space for input */
-  height: calc(100vh - 240px);
+  height: calc(100vh - 275px);
   margin-top: 30px;
 `
 
@@ -528,7 +529,6 @@ const StyledForm = styled.form`
   /* Note: backdrop-filter has minimal browser support */
 
   border-radius: 100px;
-
   /* cursor: pointer; */
 
   width: fit-content;
@@ -579,25 +579,27 @@ const StyledButton = styled.div<{ disabled: boolean }>`
 `
 
 const StyledChatFooter = styled.div`
-  position: fixed;
+  /* position: fixed;
   left: 50%;
   z-index: 100001;
   bottom: -135px;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
 
   display: flex;
   /* flex-direction: column; */
-  justify-content: center;
+  /* justify-content: center; */
 
   width: 100%;
 `
 
 const StyledButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 
   padding: 16px 0;
   width: 100%;
+
+  height: 70px;
 `
 
 const StyledChatWrapper = styled.div`
@@ -611,7 +613,7 @@ const StyledChatWrapper = styled.div`
 
 const StyledSuggestionsContainer = styled.div`
   display: flex;
-  width: calc(100vw - 50px);
+  width: calc(100vw - 100px);
 
   max-width: 800px;
   align-items: center;
@@ -638,7 +640,7 @@ const StyledFileWrapper = styled.div`
 `
 
 const StyledInputWrapper = styled.div<{ secondary?: boolean }>`
-  width: calc(100vw - 200px);
+  width: calc(100vw - 700px);
   max-width: 600px;
   padding-bottom: 2px;
 
@@ -694,9 +696,8 @@ const StyledMembersWrapper = styled.div`
   position: absolute;
   top: 20px;
   right: 5px;
-
+  border-radius: 23px;
   z-index: 12000000;
-
   padding: 10px;
 
   display: flex;
