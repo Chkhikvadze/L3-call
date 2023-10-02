@@ -3,6 +3,10 @@ from uuid import UUID
 import json
 import re
 from enum import Enum
+from typings.chat import ChatOutput
+from utils.type import convert_value_to_type
+from models.chat import ChatModel
+from utils.user import convert_model_to_response as user_convert_model_to_response
 
 class MentionModule(Enum):
     AGENT = 'agent'
@@ -10,7 +14,7 @@ class MentionModule(Enum):
     USER = 'user'
 
 
-def get_chat_session_id(user_id: UUID, account_id: UUID, is_private_chat: bool, agent_id: UUID = None, team_id: UUID = None) -> str:
+def get_chat_session_id(user_id: UUID, account_id: UUID, is_private_chat: bool, agent_id: UUID = None, team_id: UUID = None, chat_id: UUID = None) -> str:
     if is_private_chat:
         # private chat
         if agent_id:
@@ -18,6 +22,9 @@ def get_chat_session_id(user_id: UUID, account_id: UUID, is_private_chat: bool, 
         
         if team_id:
             return f"{team_id}-{user_id}"
+        
+        if chat_id:
+            return f"{chat_id}"
         
         return f"{account_id}-{user_id}"
     else:
@@ -27,6 +34,9 @@ def get_chat_session_id(user_id: UUID, account_id: UUID, is_private_chat: bool, 
 
         if team_id:
             return f"{team_id}"
+        
+        if chat_id:
+            return f"{chat_id}"
 
         return f"{account_id}"
 
@@ -85,3 +95,39 @@ def get_agents_from_json(data_string: str):
     else:
         return []
 
+
+
+
+def convert_model_to_response(chat_model: ChatModel) -> ChatOutput:
+    chat_data = {}
+    
+    # Extract attributes from ChatModel using annotations of Chat
+    for key in ChatOutput.__annotations__.keys():
+        if hasattr(chat_model, key):
+            target_type = ChatOutput.__annotations__.get(key)
+            chat_data[key] = convert_value_to_type(value=getattr(chat_model, key), target_type=target_type)
+    
+    # Convert ChatConfigModel instances to Config
+    configs = {}
+    # if hasattr(chat_model, 'configs'):
+    #     for config_model in chat_model.configs:
+    #         key = getattr(config_model, "key")
+    #         value = getattr(config_model, "value")
+            
+    #         # Convert value to the type specified in ConfigsOutput
+    #         target_type = ConfigsOutput.__annotations__.get(key)
+
+    #         if target_type:
+    #             value = convert_value_to_type(value, target_type)
+            
+    #         configs[key] = value
+    
+    # if hasattr(chat_model, 'sender_user') and chat_model.sender_user:
+    #    chat_data['sender_user'] = user_convert_model_to_response(chat_model.sender_user)
+
+    
+    return ChatOutput(**chat_data)
+
+
+def convert_chats_to_chat_list(chats: List[ChatModel]) -> List[ChatOutput]:
+    return [convert_model_to_response(chat_model) for chat_model in chats]

@@ -95,7 +95,6 @@ class ApiKeyNotFoundException(DatasourceException):
 class PlannerEmptyTasksException(AppBaseException):
     pass
 
-
 class ScheduleException(AppBaseException):
     pass
 
@@ -112,4 +111,9 @@ class GroupException(AppBaseException):
     pass
 
 class GroupNotFoundException(DatasourceException):
+    pass
+class ChatException(AppBaseException):
+    pass
+
+class ChatNotFoundException(DatasourceException):
     pass

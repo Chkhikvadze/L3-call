@@ -29,6 +29,22 @@ const darkTheme: DefaultTheme = {
     replyBoxBgColor: 'rgba(0, 0, 0, 0.4)',
     secondaryIconColor: 'rgb(255, 255, 255)',
   },
+  typography: {
+    contentPrimary: 'var(--color-primitive-white)',
+    contentSecondary: 'var(--color-transparent-white-08)',
+    contentTertiary: 'var(--color-transparent-white-06',
+    contentQuaternary: 'var(--color-transparent-white-04)',
+  },
+  heading: {
+    contentPrimary: 'var(--color-snow_white)',
+    contentSecondary: 'var(--color-transparent-white-09)',
+    contentTertiary: 'var(--color-transparent-white-04)',
+  },
+  button: {
+    primary: 'PRIMARY',
+    secondary: 'SECONDARY',
+    tertiary: 'TERTIARY',
+  },
 }
 
 const lightTheme: DefaultTheme = {
@@ -40,7 +56,7 @@ const lightTheme: DefaultTheme = {
     backdropFilter: 'blur(50px);',
     textColorPrimary: 'rgb(59, 59, 59)',
     textColorSecondary: 'rgb(110,110,110)',
-    border: '1px solid #D2D2D2',
+    border: '1px solid #acacad',
     backgroundImageSecondary: defaultBgImageSecondary,
     testVariableColor: 'var(--color-highlight_blue)',
     iconColor: 'rgb(187,187,187)',
@@ -55,6 +71,22 @@ const lightTheme: DefaultTheme = {
     humanMessageBgColor: 'rgb(240,240,240)',
     replyBoxBgColor: 'rgb(194,194,194)',
     secondaryIconColor: 'rgb(255, 255, 255)',
+  },
+  typography: {
+    contentPrimary: 'rgb(0,0,0)',
+    contentSecondary: 'rgb(49,49,49)',
+    contentTertiary: 'rgb(172,172, 173)',
+    contentQuaternary: 'rgb(189,189,189)',
+  },
+  heading: {
+    contentPrimary: 'rgb(0,0,0)',
+    contentSecondary: 'rgb(49,49,49)',
+    contentTertiary: 'rgb(172,172, 173)',
+  },
+  button: {
+    primary: 'PRIMARY',
+    secondary: 'SECONDARY',
+    tertiary: 'SECONDARY',
   },
 }
 

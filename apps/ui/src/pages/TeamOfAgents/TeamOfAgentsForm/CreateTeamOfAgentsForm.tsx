@@ -16,6 +16,7 @@ import { StyledButtonWrapper, StyledFormWrapper } from 'pages/Agents/AgentForm/C
 import { useCreateTeamOfAgents } from '../useCreateTeamOfAgents'
 import BackButton from 'components/BackButton'
 import { useNavigate } from 'react-router-dom'
+import { ButtonPrimary } from 'components/Button/Button'
 
 const CreateTeamOfAgentsForm = () => {
   const { formik, handleSubmit, isLoading } = useCreateTeamOfAgents()
@@ -35,15 +36,15 @@ const CreateTeamOfAgentsForm = () => {
             </div>
 
             <StyledButtonWrapper>
-              <BackButton customOnClick={() => navigate('/agents')} />
+              <BackButton customOnClick={() => navigate('/chat')} />
 
-              <Button
+              <ButtonPrimary
                 onClick={() => handleSubmit(formik?.values)}
                 size={Button.sizes.SMALL}
                 disabled={isLoading}
               >
                 {isLoading ? <Loader size={32} /> : 'Save'}
-              </Button>
+              </ButtonPrimary>
             </StyledButtonWrapper>
           </StyledHeaderGroup>
 

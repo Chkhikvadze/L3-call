@@ -19,6 +19,7 @@ import { StyledButtonWrapper } from './CreateAgentForm'
 import CreateAgentButtonCard from './components/CreateAgentButtonCard'
 import { useModal } from 'hooks'
 import { useAgentTemplatesService } from 'services/discover/useAgentTemplatesService'
+import TypographyPrimary from 'components/Typography/Primary'
 
 const CreateAgentTemplate = () => {
   const { refetchAgent } = useAgents()
@@ -40,7 +41,7 @@ const CreateAgentTemplate = () => {
         </div>
 
         <StyledButtonWrapper>
-          <BackButton customOnClick={() => navigate('/agents')} />
+          <BackButton customOnClick={() => navigate('/chat')} />
         </StyledButtonWrapper>
       </StyledHeaderGroup>
 
@@ -50,11 +51,10 @@ const CreateAgentTemplate = () => {
             <CreateAgentButtonCard onClick={() => navigate('/agents/create-agent')} />
 
             {agentsData?.length > 0 && (
-              <Typography
+              <TypographyPrimary
                 value='Choose Template'
                 type={Typography.types.LABEL}
                 size={Typography.sizes.lg}
-                customColor={'#FFF'}
               />
             )}
           </StyledTemplateHeader>
@@ -75,7 +75,7 @@ const CreateAgentTemplate = () => {
                     await refetchAgent({ id: agent.id })
                     navigate(`/agents/create-agent?agentId=${agent.id}`)
                   }}
-                  creator={agent.creator}
+                  // creator={agent.creator}
                   avatar={agent.avatar}
                 />
               )

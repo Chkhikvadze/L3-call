@@ -13,6 +13,11 @@ import EyeOpen from '@l3-lib/ui-core/dist/icons/EyeOpen'
 import AvatarGenerator from 'components/AvatarGenerator/AvatarGenerator'
 
 import Heading from '@l3-lib/ui-core/dist/Heading'
+import TypographyTertiary from 'components/Typography/Tertiary'
+import TypographySecondary from 'components/Typography/Secondary'
+import TypographyPrimary from 'components/Typography/Primary'
+import HeadingSecondary from 'components/Heading/Secondary'
+import { ButtonPrimary } from 'components/Button/Button'
 
 type TeamOfAgentCardProps = {
   name: string
@@ -40,8 +45,8 @@ const TeamOfAgentCard = ({
   teamType,
 }: TeamOfAgentCardProps) => {
   let shortDescription = description || ''
-  if (description.length > 150) {
-    shortDescription = `${description.slice(0, 150)}...`
+  if (description.length > 120) {
+    shortDescription = `${description.slice(0, 120)}...`
   }
 
   return (
@@ -55,40 +60,30 @@ const TeamOfAgentCard = ({
             textSizeRatio={1.5}
             avatar={creator.avatar}
           />
-          <StyledCreatorNameWrapper>
-            <Typography
-              value={creator.name}
-              type={Typography.types.P}
-              size={Typography.sizes.xss}
-              // customColor={'rgba(255,255,255, 0.6)'}
-            />
-          </StyledCreatorNameWrapper>
+
+          <TypographyTertiary
+            value={creator.name}
+            type={Typography.types.P}
+            size={Typography.sizes.xss}
+          />
         </StyledCreatorWrapper>
       </StyledMainAvatarWrapper>
       <StyledBody>
-        <StyledTextWrapper>
-          <Heading type={Heading.types.h1} value={name} size='medium' />
-        </StyledTextWrapper>
+        <HeadingSecondary type={Heading.types.h1} value={name} size='medium' />
 
-        <StyledShortDescription>
-          <Typography
-            value={shortDescription}
-            type={Typography.types.P}
-            size={Typography.sizes.sm}
-            // customColor={'rgba(255,255,255, 0.8)'}
-          />
-        </StyledShortDescription>
+        <TypographySecondary
+          value={shortDescription}
+          type={Typography.types.P}
+          size={Typography.sizes.sm}
+        />
 
         {teamAgents?.length > 0 && (
           <StyledRowWrapper>
-            <StyledTextWrapper>
-              <Typography
-                value={'Agents'}
-                type={Typography.types.P}
-                size={Typography.sizes.md}
-                // customColor={'#FFF'}
-              />
-            </StyledTextWrapper>
+            <TypographyPrimary
+              value={'Agents'}
+              type={Typography.types.P}
+              size={Typography.sizes.md}
+            />
 
             <StyledAvatarsContainer>
               {teamAgents?.map((teamAgents: any) => {
@@ -106,22 +101,17 @@ const TeamOfAgentCard = ({
 
         {teamType && (
           <StyledRowWrapper>
-            <StyledTextWrapper>
-              <Typography
-                value={'Type'}
-                type={Typography.types.P}
-                size={Typography.sizes.md}
-                // customColor={'#FFF'}
-              />
-            </StyledTextWrapper>
-            <StyledShortDescription>
-              <Typography
-                value={teamType}
-                type={Typography.types.P}
-                size={Typography.sizes.xss}
-                // customColor={'rgba(255,255,255,0.8)'}
-              />
-            </StyledShortDescription>
+            <TypographyPrimary
+              value={'Type'}
+              type={Typography.types.P}
+              size={Typography.sizes.md}
+            />
+
+            <TypographySecondary
+              value={teamType}
+              type={Typography.types.P}
+              size={Typography.sizes.xss}
+            />
           </StyledRowWrapper>
         )}
       </StyledBody>
@@ -169,12 +159,12 @@ const TeamOfAgentCard = ({
 
           {onChatClick && (
             <StyledChatButtonWrapper>
-              <Button size={Button.sizes.SMALL} kind={Button.kinds.PRIMARY} onClick={onChatClick}>
+              <ButtonPrimary size={Button.sizes.SMALL} onClick={onChatClick}>
                 <StyledInnerButtonWrapper>
                   Chat
                   <MoveArrowRight size={14} />
                 </StyledInnerButtonWrapper>
-              </Button>
+              </ButtonPrimary>
             </StyledChatButtonWrapper>
           )}
         </StyledButtonsWrapper>
@@ -187,15 +177,15 @@ export default TeamOfAgentCard
 
 const StyledCard = styled.div`
   position: relative;
-  width: 320px;
-  min-width: 320px;
+  width: 345px;
+  min-width: 345px;
   height: 370px;
   min-height: 370px;
 
   padding: 20px 25px;
   /* padding-top: 30px; */
 
-  border-radius: 10px;
+  border-radius: 22px;
   border: ${({ theme }) => theme.body.border};
   background: ${({ theme }) => theme.body.backgroundColorSecondary};
   display: flex;
@@ -291,15 +281,7 @@ const StyledCreatorWrapper = styled.div`
   color: ${({ theme }) =>
     theme.body.backgroundColorPrimary === 'rgb(255, 255, 255)' ? 'red' : 'rgba(0, 0, 0, 0.2)'};
 `
-const StyledTextWrapper = styled.div`
-  color: ${({ theme }) => theme.body.textColorSecondary};
-`
-export const StyledShortDescription = styled.div`
-  color: ${({ theme }) => theme.body.textColorSecondary};
-`
-const StyledCreatorNameWrapper = styled.div`
-  color: ${({ theme }) => theme.body.textColorSecondary};
-`
+
 export const StyledEyeOpenIcon = styled(EyeOpen)`
   path {
     stroke: ${({ theme }) => theme.body.iconColor};

@@ -16,6 +16,10 @@ import {
   StyledChatButtonWrapper,
   StyledInnerButtonWrapper,
 } from 'pages/TeamOfAgents/TeamOfAgentsCard/TeamOfAgentsCard'
+import TypographySecondary from 'components/Typography/Secondary'
+import TypographyPrimary from 'components/Typography/Primary'
+import TypographyTertiary from 'components/Typography/Tertiary'
+import { ButtonPrimary } from 'components/Button/Button'
 
 type AgentCardProps = {
   name: string
@@ -45,8 +49,8 @@ const AgentCard = ({
   avatar,
 }: AgentCardProps) => {
   let shortDescription = description
-  if (description.length > 75) {
-    shortDescription = `${description.slice(0, 75)}...`
+  if (description.length > 130) {
+    shortDescription = `${description.slice(0, 130)}...`
   }
 
   let shortHeaderTag = headerTag
@@ -54,46 +58,46 @@ const AgentCard = ({
     shortHeaderTag = `${headerTag.slice(0, 40)}...`
   }
 
+  let shortTitle = name
+  if (name && name?.length > 20) {
+    shortTitle = `${name.slice(0, 20)}...`
+  }
+
   return (
     <StyledAgentCard>
       <StyledCardHeader>
-        <div>
-          {headerText && (
-            <Typography
-              value={headerText}
-              type={Typography.types.P}
-              size={Typography.sizes.sm}
-              customColor={'rgba(255,255,255, 0.8)'}
-            />
-          )}
-        </div>
-
-        <div>{headerTag && <Tags label={shortHeaderTag} readOnly size='small' outlined />}</div>
-      </StyledCardHeader>
-      <StyledCardBody>
         <StyledAvatarWrapper>
           <AvatarGenerator name={name} size={50} avatar={avatar} />
         </StyledAvatarWrapper>
-        <StyledBodyTextWrapper>
-          <StyledTypography>
-            <Typography
-              value={name}
-              type={Typography.types.P}
-              size={Typography.sizes.lg}
-              // customColor={'#FFF'}
-            />
-          </StyledTypography>
-          <StyledShortDescription>
-            <Typography
-              value={shortDescription}
+
+        <StyledTitleWrapper>
+          <TypographyPrimary
+            value={shortTitle}
+            type={Typography.types.P}
+            size={Typography.sizes.lg}
+          />
+          <div>{headerTag && <Tags label={shortHeaderTag} readOnly size='small' outlined />}</div>
+        </StyledTitleWrapper>
+        {/* <div>
+          {headerText && (
+            <TypographySecondary
+              value={headerText}
               type={Typography.types.P}
               size={Typography.sizes.sm}
-              // customColor={'rgba(255,255,255, 0.8)'}
             />
-          </StyledShortDescription>
+          )}
+        </div> */}
+      </StyledCardHeader>
+      <StyledCardBody>
+        <StyledBodyTextWrapper>
+          <TypographySecondary
+            value={shortDescription}
+            type={Typography.types.P}
+            size={Typography.sizes.sm}
+          />
         </StyledBodyTextWrapper>
       </StyledCardBody>
-      <StyledCardFooter>
+      <StyledCardFooter className='cardFooter'>
         {creator && (
           <StyledCreatorWrapper>
             {/* <StyledLogo src={l3Logo} /> */}
@@ -103,38 +107,32 @@ const AgentCard = ({
               textSizeRatio={1.5}
               avatar={creator.avatar}
             />
-            <StyledCreatorNameWrapper>
-              <Typography
-                value={creator.name}
-                type={Typography.types.P}
-                size={Typography.sizes.xss}
-                // customColor={'rgba(255,255,255, 0.6)'}
-              />
-            </StyledCreatorNameWrapper>
+
+            <TypographyTertiary
+              value={creator.name}
+              type={Typography.types.P}
+              size={Typography.sizes.xss}
+            />
           </StyledCreatorWrapper>
         )}
-        <StyledButtonsWrapper className='footerButtons'>
+        <StyledButtonsWrapper>
           {onDeleteClick && (
-            <StyledHiddenButton className='hiddenButton'>
-              <IconButton
-                onClick={onDeleteClick}
-                icon={() => <Delete />}
-                size={Button.sizes.SMALL}
-                kind={IconButton.kinds.TERTIARY}
-                // ariaLabel='Delete'
-              />
-            </StyledHiddenButton>
+            <IconButton
+              onClick={onDeleteClick}
+              icon={() => <Delete />}
+              size={Button.sizes.SMALL}
+              kind={IconButton.kinds.TERTIARY}
+              // ariaLabel='Delete'
+            />
           )}
           {onEditClick && (
-            <StyledHiddenButton className='hiddenButton'>
-              <IconButton
-                onClick={onEditClick}
-                icon={() => <Edit />}
-                size={IconButton.sizes.SMALL}
-                kind={IconButton.kinds.TERTIARY}
-                // ariaLabel='Edit'
-              />
-            </StyledHiddenButton>
+            <IconButton
+              onClick={onEditClick}
+              icon={() => <Edit />}
+              size={IconButton.sizes.SMALL}
+              kind={IconButton.kinds.TERTIARY}
+              // ariaLabel='Edit'
+            />
           )}
           {onViewClick && (
             <IconButton
@@ -150,18 +148,18 @@ const AgentCard = ({
             />
           )}
           {onCreateClick && (
-            <Button size={Button.sizes.SMALL} kind={Button.kinds.PRIMARY} onClick={onCreateClick}>
+            <ButtonPrimary size={Button.sizes.SMALL} onClick={onCreateClick}>
               Create
-            </Button>
+            </ButtonPrimary>
           )}
           {onChatClick && (
             <StyledChatButtonWrapper>
-              <Button size={Button.sizes.SMALL} kind={Button.kinds.PRIMARY} onClick={onChatClick}>
+              <ButtonPrimary size={Button.sizes.SMALL} onClick={onChatClick}>
                 <StyledInnerButtonWrapper secondary>
                   Chat
                   <MoveArrowRight size={14} />
                 </StyledInnerButtonWrapper>
-              </Button>
+              </ButtonPrimary>
             </StyledChatButtonWrapper>
           )}
         </StyledButtonsWrapper>
@@ -174,15 +172,16 @@ export default AgentCard
 
 export const StyledAgentCard = styled.div`
   position: relative;
-  width: 335px;
-  min-width: 335px;
+  width: 345px;
+  min-width: 345px;
   height: 185px;
   min-height: 185px;
 
   padding: 15px;
   padding-bottom: 10px;
 
-  border-radius: 10px;
+  border-radius: 22px;
+
   /* background: rgba(0, 0, 0, 0.5); */
   background: ${({ theme }) => theme.body.cardBgColor};
   border: ${({ theme }) => theme.body.border};
@@ -192,7 +191,7 @@ export const StyledAgentCard = styled.div`
   justify-content: center;
 
   :hover {
-    .hiddenButton {
+    .cardFooter {
       opacity: 1;
     }
   }
@@ -200,12 +199,15 @@ export const StyledAgentCard = styled.div`
 const StyledCardHeader = styled.div`
   width: 100%;
 
+  padding: 20px 0;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  /* justify-content: space-between; */
 
-  margin-bottom: auto;
-  padding-bottom: 5px;
+  margin-bottom: 5px;
+  /* padding-bottom: 5px; */
   min-height: 20px;
   /* margin-bottom: 10px; */
 `
@@ -233,6 +235,8 @@ const StyledCardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  opacity: 0;
+  transition: opacity 800ms;
 `
 const StyledButtonsWrapper = styled.div`
   display: flex;
@@ -255,13 +259,7 @@ const StyledAvatarWrapper = styled.div`
   text-align: center;
   height: fit-content;
 `
-const StyledHiddenButton = styled.div`
-  width: fit-content;
-  height: fit-content;
 
-  opacity: 0;
-  transition: opacity 300ms;
-`
 const StyledIconWrapper = styled.div`
   /* color: #000; */
   color: transparent;
@@ -272,19 +270,13 @@ const StyledCreatorWrapper = styled.div`
   align-items: center;
   gap: 4px;
 `
-const StyledTypography = styled.div`
-  color: ${({ theme }) => theme.body.textColorSecondary};
-`
-
-const StyledShortDescription = styled.div`
-  color: ${({ theme }) => theme.body.textColorSecondary};
-`
-const StyledCreatorNameWrapper = styled.div`
-  color: ${({ theme }) => theme.body.mainNavColor};
-`
 
 const StyledEyeOpenIcon = styled(EyeOpen)`
   path {
     stroke: ${({ theme }) => theme.body.iconColor};
   }
+`
+const StyledTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `
