@@ -7,34 +7,47 @@ import os
 from twilio.rest import Client
 import requests   
 import json
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Request, Response
 from starlette.websockets import WebSocketDisconnect
 import logging
 import base64
 from twilio.twiml.voice_response import VoiceResponse
+from pydantic import BaseModel
+from controllers.deepgram import transcribe_audio_with_deepgram
+import asyncio
+import websockets
+import base64
 
 router = APIRouter()
 
 domain =  "l3agi.ngrok.dev"
+socket_url = 'wss://l3agi.ngrok.dev/twilio/media'
+# socker_url = 'wss://localhost:4000/twilio/media'
 
 @router.post("/call/outbound", status_code=200)
-def make_call():
+def make_call(req: Request, res: Response):
     """Description"""
     account_sid = "AC3a1cd89b4f2908071affc1f56f23b2d5" #self.get_env_key("TWILIO_ACCOUNT_SID")
-    auth_token = "826fd14a632821335b98743de5eb04a0" #self.get_env_key("TWILIO_AUTH_TOKEN")
+    auth_token = "6c176f0f6495f82fa6b7ed06eb1c64ae" #self.get_env_key("TWILIO_AUTH_TOKEN")
     # from_number = "+13345648359" #self.get_env_key("TWILIO_FROM_NUMBER")
     # to='+995597570605',
     
     
-    say =f"""<Say>Ahoy there!</Say>"""
+    say =f"""<Say>Ahoy there, are you here Giga!</Say>"""
+    play = f"""<Play oop="0>https://api.twilio.com/cowbell.mp3</Play>"""
     
+    record_url = "https://l3agi.ngrok.dev/twilio/voice/record"
+    record = f"""<Record timeout="30" transcribe="true" recordingStatusCallback="{record_url}"/>"""
+                    
+                    
+    start = f"""<Start>
+                    <Stream url="{socket_url}" />
+                </Start>"""
     twiml=f"""
     <Response>
-        <Start>
-            <Stream url="wss://{domain}/twilio/media" />
-        </Start>
-        <Play oop="0>https://api.twilio.com/cowbell.mp3</Play>
-        <Record timeout="10" transcribe="true" />
+        {start}
+        {say}
+        {record}
     </Response>
     """
     client = Client(account_sid, auth_token)
@@ -44,12 +57,12 @@ def make_call():
                 twiml=twiml,               
                 
                 
-                to='+18052901594',
-                # to='+995597570605',
+                # to='+18052901594',
+                to='+995597570605',
                 
                 
-                # from_='+18052901594'
-                from_='+995597570605'
+                from_='+18052901594'
+                # from_='+995597570605'
             )
     print(call.sid)
     return {
@@ -57,8 +70,8 @@ def make_call():
     }
     
     
-@router.post("/voice/webhook/voice", status_code=200)
-def webhook_voice():
+@router.post("/voice/webhook", status_code=200)
+def webhook_voice(req: Request, res: Response):
     """Make call"""
 
     return {
@@ -66,7 +79,7 @@ def webhook_voice():
     }
     
 @router.post("/webhook/fails", status_code=200)
-def webhook_fails():
+def webhook_fails(req: Request, res: Response):
     """Make call"""
 
     return {
@@ -74,31 +87,49 @@ def webhook_fails():
     }
     
 @router.post("/voice/call-status-change", status_code=201)
-def voice_call_status_change():
+def voice_call_status_change(req: Request, res: Response):
     """Make call"""
 
     return {
         "true": True,
     }
 
+class RecordData(BaseModel):
+    RecordingUrl: str
+    RecordingSid: str
+    RecordingDuration: str
+    
+
+@router.post("/voice/record")
+async def record(request: Request):
+    form_data = await request.form()
+    record_data = RecordData(**form_data)
+    print(record_data.RecordingUrl)  # Access the recording URL
+    print(record_data.RecordingSid)  # Access the recording SID
+    print(record_data.RecordingDuration)  # Access the recording duration
+    # Process the data as needed
+    return {"status": "success"}
 
 
-@router.post("/record")
-def record():
-    """Returns TwiML which prompts the caller to record a message"""
-    # Start our TwiML response
-    response = VoiceResponse()
 
-    # Use <Say> to give the caller some instructions
-    response.say('Hello. Please leave a message after the beep.')
+# def transcribe_audio_with_deepgram(audio_data):
+#     url = "https://api.deepgram.com/v1/listen"
+#     headers = {
+#         "Authorization": "2233b7497c00e286e3d3ff507b7ef47905f929bd",
+#     }
+#     response = requests.post(url, headers=headers, data=audio_data)
+#     transcript = response.json()["results"]["channels"][0]["alternatives"][0]["transcript"]
+#     print("Transcript: ", transcript)
 
-    # Use <Record> to record the caller's message
-    response.record(timeout=10, transcribe=True)
-
-    # End the call with <Hangup>
-    response.hangup()
-
-    return str(response)
+# async def transcribe_audio_with_deepgram(audio_data):
+#     uri = "wss://api.deepgram.com/v1/listen?access_token=f356d66c50f1943171c4a893e2047deefc089a59"
+#     async with websockets.connect(uri) as websocket:
+#         await websocket.send(audio_data)
+#         while True:
+#             response = await websocket.recv()
+#             transcript = response["results"]["channels"][0]["alternatives"][0]["transcript"]
+#             print("Transcript: ", transcript)
+            
 
 @router.websocket("/media")
 async def websocket_endpoint(websocket: WebSocket):
@@ -114,6 +145,10 @@ async def websocket_endpoint(websocket: WebSocket):
             break
 
         data = json.loads(message)
+        
+        # print(data['event'])
+        # print(data)
+        
 
         if data['event'] == "connected":
             logging.info("Connected Message received: {}".format(message))
@@ -124,9 +159,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 logging.info("Media message: {}".format(message))
                 payload = data['media']['payload']
                 logging.info("Payload is: {}".format(payload))
-                chunk = base64.b64decode(payload)
-                logging.info("That's {} bytes".format(len(chunk)))
-                logging.info("Additional media messages from WebSocket are being suppressed....")
+                audio_data = base64.b64decode(payload)
+                logging.info("That's {} bytes".format(len(audio_data)))
+                asyncio.create_task(transcribe_audio_with_deepgram(audio_data))
                 has_seen_media = True
         if data['event'] == "stop":
             logging.info("Stop Message received: {}".format(message))
@@ -198,3 +233,23 @@ def text_to_speech():
     response = requests.request("GET", url, headers=headers, data=payload)
 
     return response
+
+
+# from fastapi import HTTPException
+# from fastapi.responses import StreamingResponse
+
+# @router.get("/audio-proxy/{audio_id}")
+# async def audio_proxy(audio_id: str):
+#     play_ht_url = f"https://play.ht/api/v2/tts/{audio_id}?format=audio-mpeg"
+    
+#     headers = {
+#         'Authorization': 'Bearer YOUR_PLAYHT_TOKEN',
+#         'X-USER-ID': 'YOUR_USER_ID'
+#     }
+    
+#     response = requests.get(play_ht_url, headers=headers, stream=True)
+    
+#     if response.status_code != 200:
+#         raise HTTPException(status_code=response.status_code, detail="Unable to fetch audio.")
+    
+#     return StreamingResponse(response.iter_content(), media_type="audio/mpeg")
