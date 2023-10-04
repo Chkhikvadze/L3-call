@@ -17,6 +17,10 @@ from controllers.deepgram import transcribe_audio_with_deepgram
 import asyncio
 import websockets
 import base64
+import httpx
+
+from fastapi import HTTPException
+from fastapi.responses import StreamingResponse
 
 router = APIRouter()
 
@@ -34,8 +38,14 @@ def make_call(req: Request, res: Response):
     
     
     say =f"""<Say>Ahoy there, are you here Giga!</Say>"""
-    play = f"""<Play oop="0>https://api.twilio.com/cowbell.mp3</Play>"""
+    # play = f"""<Play oop="0>https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
+    # play = f"""<Play loop="10">https://api.twilio.com/cowbell.mp3</Play>"""
+    play = f"""<Play loop="1">https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
     
+    connect=f"""<Connect action="https://myactionurl.com/twiml" >
+                    <VirtualAgent connectorName="project" statusCallback="https://mycallbackurl.com"/>
+                </Connect>"""
+                    
     record_url = "https://l3agi.ngrok.dev/twilio/voice/record"
     record = f"""<Record timeout="30" transcribe="true" recordingStatusCallback="{record_url}"/>"""
                     
@@ -45,8 +55,8 @@ def make_call(req: Request, res: Response):
                 </Start>"""
     twiml=f"""
     <Response>
+        {play}
         {start}
-        {say}
         {record}
     </Response>
     """
@@ -110,6 +120,17 @@ async def record(request: Request):
     # Process the data as needed
     return {"status": "success"}
 
+@router.post("/voice/dialog")
+async def record(request: Request):
+    print(request)
+    # form_data = await request.form()
+    # record_data = RecordData(**form_data)
+    # print(record_data.RecordingUrl)  # Access the recording URL
+    # print(record_data.RecordingSid)  # Access the recording SID
+    # print(record_data.RecordingDuration)  # Access the recording duration
+    # Process the data as needed
+    return {"status": "success"}
+
 
 
 # def transcribe_audio_with_deepgram(audio_data):
@@ -161,7 +182,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 logging.info("Payload is: {}".format(payload))
                 audio_data = base64.b64decode(payload)
                 logging.info("That's {} bytes".format(len(audio_data)))
-                asyncio.create_task(transcribe_audio_with_deepgram(audio_data))
+                # asyncio.create_task(transcribe_audio_with_deepgram(audio_data))
                 has_seen_media = True
         if data['event'] == "stop":
             logging.info("Stop Message received: {}".format(message))
@@ -169,14 +190,54 @@ async def websocket_endpoint(websocket: WebSocket):
         message_count += 1
         
 
+
+
+# @router.post("/speech-to-text", status_code=201)
+# def text_to_speech():
+#     """Text to speech"""
+
+#     url = "https://play.ht/api/v2/tts/stream"
+
+#     payload = {
+#         "text": "Hello Giga, How are you, I want ti introduce our products, which one would you like?",
+#         "voice": "larry",
+#         "quality": "draft",
+#         "output_format": "mp3",
+#         "speed": 1,
+#         "sample_rate": 24000
+#     }
+#     headers = {
+#         "accept": "application/json",
+#         "content-type": "application/json",
+#         "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
+#         "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2"
+#     }
+
+#     response = requests.post(url, json=payload, headers=headers)
+
+#     response_json = json.loads(response.text)
+    
+#     url = response_json["href"]
+
+#     #Get Audio
+#     payload = {}
+#     headers = {
+#     'Authorization': 'Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038',
+#     'X-USER-ID': 'NF9Psaqy2cOKRDqrUVs2bYnELWW2'
+#     }
+
+#     response = requests.request("GET", url, headers=headers, data=payload)
+
+#     return response
+
 @router.post("/text-to-speech", status_code=201)
 def text_to_speech():
     """Text to speech"""
-
+    text =   "Hello Leeroy! How's everything going for you today? I'm thrilled to introduce you to our range of premium products. Whether you're interested in iPhones, MacBooks, AirPods, or something else from our collection, we have it all. Just let me know your preference, and I'll be delighted to assist you further!"
     url = "https://play.ht/api/v2/tts/stream"
 
     payload = {
-        "text": "Hello Giga, How are you, I want ti introduce our products, which one would you like?",
+        "text": text,
         "voice": "larry",
         "quality": "draft",
         "output_format": "mp3",
@@ -194,62 +255,76 @@ def text_to_speech():
 
     response_json = json.loads(response.text)
 
-    return response_json
+    return response_json['href']
 
-@router.post("/speech-to-text", status_code=201)
-def text_to_speech():
-    """Text to speech"""
-
-    url = "https://play.ht/api/v2/tts/stream"
-
-    payload = {
-        "text": "Hello Giga, How are you, I want ti introduce our products, which one would you like?",
-        "voice": "larry",
-        "quality": "draft",
-        "output_format": "mp3",
-        "speed": 1,
-        "sample_rate": 24000
-    }
-    headers = {
-        "accept": "application/json",
-        "content-type": "application/json",
-        "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
-        "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2"
-    }
-
-    response = requests.post(url, json=payload, headers=headers)
-
-    response_json = json.loads(response.text)
-    
-    url = response_json["href"]
-
-    #Get Audio
-    payload = {}
-    headers = {
-    'Authorization': 'Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038',
-    'X-USER-ID': 'NF9Psaqy2cOKRDqrUVs2bYnELWW2'
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    return response
-
-
-# from fastapi import HTTPException
-# from fastapi.responses import StreamingResponse
-
-# @router.get("/audio-proxy/{audio_id}")
-# async def audio_proxy(audio_id: str):
-#     play_ht_url = f"https://play.ht/api/v2/tts/{audio_id}?format=audio-mpeg"
+@router.get("/audio-proxy/cowbell.mp3")
+# async def audio_proxy():
+#     data = text_to_speech("Hello Giga, How are you, I want ti introduce our products, which one would you like?")
+#     play_ht_url = data['href']
     
 #     headers = {
-#         'Authorization': 'Bearer YOUR_PLAYHT_TOKEN',
-#         'X-USER-ID': 'YOUR_USER_ID'
+#         "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
+#         "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2"
 #     }
     
-#     response = requests.get(play_ht_url, headers=headers, stream=True)
+#     async with httpx.AsyncClient() as client:
+#         response = await client.get(play_ht_url, headers=headers)
     
 #     if response.status_code != 200:
 #         raise HTTPException(status_code=response.status_code, detail="Unable to fetch audio.")
     
-#     return StreamingResponse(response.iter_content(), media_type="audio/mpeg")
+#     async def content_generator():
+#         async for chunk in response.aiter_bytes():
+#             yield chunk
+
+#     return StreamingResponse(content_generator(), media_type="audio/mpeg")
+async def audio_proxy():
+    # text = "Hello Leeroy! How are you today? We have a fantastic range of products including iPhones, MacBooks, and AirPods. What catches your eye?"
+    text = "Hello Leeroy! How's everything going for you today? I'm thrilled to introduce you to our range of premium products. Whether you're interested in iPhones, MacBooks, AirPods, or something else from our collection, we have it all. Just let me know your preference, and I'll be delighted to assist you further!"
+    url = "https://play.ht/api/v2/tts/stream"
+    headers = {
+        "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
+        "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2",
+        "accept": "*/*",
+        "content-type": "application/json"
+    }
+    payload = {
+        "text": text,
+        "voice": "larry",
+        "quality": "draft",
+        "output_format": "mp3",
+        "speed": 1,
+        "sample_rate": 24000,
+        "voice_engine": "PlayHT1.0"
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="Unable to fetch audio.")
+
+    async def content_generator():
+        async for chunk in response.aiter_bytes():
+            yield chunk
+
+    return StreamingResponse(content_generator(), media_type="audio/mpeg")
+
+
+
+@app.get("/fetch_audio/")
+def fetch_audio():
+    TTS_URL = text_to_speech()
+
+    # The credentials or headers you need for the TTS service
+    HEADERS = {
+        "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
+        "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2",
+    }
+
+
+    response = requests.get(TTS_URL, headers=HEADERS)
+    
+    # Ensure you have error handling here for failed requests
+    
+    return response.content

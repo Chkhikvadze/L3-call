@@ -4,7 +4,6 @@ from deepgram import Deepgram
 import asyncio
 import aiohttp
 
-
 # Your Deepgram API Key
 DEEPGRAM_API_KEY = 'f356d66c50f1943171c4a893e2047deefc089a59'
 
@@ -77,6 +76,8 @@ def handle_transcript(transcript):
     print(transcript)
 
 async def transcribe_audio_with_deepgram(audio_data):
+    audio_info = mediainfo(audio_data)
+    print(audio_info)
     # Initialize the Deepgram SDK
     deepgram = Deepgram(DEEPGRAM_API_KEY)
 
