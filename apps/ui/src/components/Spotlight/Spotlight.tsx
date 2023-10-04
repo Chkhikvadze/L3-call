@@ -45,14 +45,9 @@ const Spotlight = () => {
 
   // Prefetch messages
   useChatMessagesService({
-    isPrivateChat: false,
     agentId,
     teamId,
   })
-
-  // useChatMessagesService({
-  //   isPrivateChat: true,
-  // })
 
   const inputRef = useRef(null as any)
   const outsideClickRef = useRef(null as any)
@@ -100,7 +95,6 @@ const Spotlight = () => {
 
       await createChatMessageService({
         message: formValue,
-        isPrivateChat: false,
         agentId,
         teamId,
       })
@@ -186,6 +180,7 @@ const Spotlight = () => {
                 value={'Thinking...'}
                 type={Typography.types.LABEL}
                 size={Typography.sizes.sm}
+                style={{ color: 'red' }}
               />
             </>
           ) : (

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Navigate, useLocation, useNavigate, useOutlet, useParams } from 'react-router-dom'
 
-import { AuthContext } from 'contexts'
+import { AuthContext, ToastContext } from 'contexts'
 
 import { Header } from 'components/Layout'
 import { StyledAppContainer } from '../components/Layout/LayoutStyle'
@@ -17,18 +17,23 @@ import { useTeamOfAgents } from 'pages/TeamOfAgents/useTeamOfAgents'
 import TeamChatCard from 'components/ChatCards/TeamChatCard'
 import AgentChatCard from 'components/ChatCards/AgentChatCard'
 import ListHeader from './components/ListHeader'
+import { useChatsService } from 'services/chat/useChatsService'
+import CustomerChatCard from 'components/ChatCards/CustomerChatCard'
+import { useDeleteChatService } from 'services/chat/useDeleteChatService'
 
 const ChatRouteLayout = () => {
   const { user } = React.useContext(AuthContext)
 
+  const { setToast } = useContext(ToastContext)
+
   const outlet = useOutlet()
   const { agentsData } = useAgents()
-
   const { teamOfAgents: teamOfAgentsArray } = useTeamOfAgents()
+  const { data: chatsData, refetch: refetchChat } = useChatsService()
 
   const navigate = useNavigate()
 
-  const { openModal } = useModal()
+  const { openModal, closeModal } = useModal()
 
   const location = useLocation()
 
@@ -37,86 +42,142 @@ const ChatRouteLayout = () => {
 
   const agentId = urlParams.get('agent') || params.agentId
   const teamId = urlParams.get('team') || params.teamId
+  const chatId = urlParams.get('chat')
 
-  if (!user) return <Navigate to='/' />
+  const { deleteChat } = useDeleteChatService()
+
+  if (!user && !chatId) return <Navigate to='/' />
 
   return (
     <StyledAppContainer className='app_container'>
       <Header />
       <StyledContainer>
         <StyledList>
-          <ListHeader title='Team' onAddClick={() => navigate('/team-of-agents/create-team')} />
+          {user && (
+            <>
+              <ListHeader title='Team' onAddClick={() => navigate('/team-of-agents/create-team')} />
 
-          {teamOfAgentsArray?.map((teamOfAgents: any, index: number) => {
-            const { team_agents } = teamOfAgents
+              {teamOfAgentsArray?.map((teamOfAgents: any, index: number) => {
+                const { team_agents } = teamOfAgents
 
-            const isCreator = user?.id === teamOfAgents?.created_by
+                const isCreator = user?.id === teamOfAgents?.created_by
 
-            const handleView = (event: any) => {
-              event.stopPropagation()
+                const handleView = () => {
+                  openModal({
+                    name: 'team-of-agent-view-modal',
+                    data: { teamOfAgents: teamOfAgents },
+                  })
+                }
 
-              openModal({
-                name: 'team-of-agent-view-modal',
-                data: { teamOfAgents: teamOfAgents },
-              })
-            }
+                const handleEdit = () => {
+                  navigate(`/team-of-agents/${teamOfAgents.id}/edit-team`)
+                }
 
-            const handleEdit = (event: any) => {
-              event.stopPropagation()
-              navigate(`/team-of-agents/${teamOfAgents.id}/edit-team`)
-            }
+                return (
+                  <TeamChatCard
+                    key={index}
+                    onClick={() => navigate(`/chat?team=${teamOfAgents.id}`)}
+                    onViewClick={handleView}
+                    onEditClick={isCreator ? handleEdit : undefined}
+                    picked={teamId === teamOfAgents.id}
+                    team={teamOfAgents}
+                    agents={team_agents}
+                  />
+                )
+              })}
+            </>
+          )}
 
-            return (
-              <TeamChatCard
-                key={index}
-                onClick={() => navigate(`/chat?team=${teamOfAgents.id}`)}
-                onViewClick={handleView}
-                onEditClick={isCreator ? handleEdit : undefined}
-                picked={teamId === teamOfAgents.id}
-                team={teamOfAgents}
-                agents={team_agents}
+          {user && (
+            <>
+              <ListHeader
+                title='Agent'
+                onAddClick={() => navigate('/agents/create-agent-template')}
               />
-            )
-          })}
 
-          <ListHeader title='Agent' onAddClick={() => navigate('/agents/create-agent-template')} />
+              {agentsData?.map((agentObj: any, index: number) => {
+                const { agent } = agentObj
 
-          {agentsData?.map((agentObj: any, index: number) => {
-            const { agent } = agentObj
+                const isCreator = user?.id === agent?.created_by
 
-            const isCreator = user?.id === agent?.created_by
+                const handleEdit = () => {
+                  navigate(`/agents/${agent?.id}/edit-agent`)
+                }
 
-            const handleEdit = (event: any) => {
-              event.stopPropagation()
-              navigate(`/agents/${agent?.id}/edit-agent`)
-            }
+                const handleView = () => {
+                  openModal({
+                    name: 'agent-view-modal',
+                    data: {
+                      agent: agentObj,
+                    },
+                  })
+                }
 
-            const handleView = (event: any) => {
-              event.stopPropagation()
+                return (
+                  <AgentChatCard
+                    key={index}
+                    onClick={() => navigate(`/chat?agent=${agent.id}`)}
+                    onViewClick={handleView}
+                    onEditClick={isCreator ? handleEdit : undefined}
+                    picked={agentId === agent.id}
+                    agent={agent}
+                  />
+                )
+              })}
+            </>
+          )}
 
-              openModal({
-                name: 'agent-view-modal',
-                data: {
-                  agent: agentObj,
-                },
-              })
-            }
+          {user && chatsData?.length > 0 && (
+            <>
+              <ListHeader title='Channel' />
 
-            return (
-              <AgentChatCard
-                key={index}
-                onClick={() => navigate(`/chat?agent=${agent.id}`)}
-                onViewClick={handleView}
-                onEditClick={isCreator ? handleEdit : undefined}
-                picked={agentId === agent.id}
-                agent={agent}
-              />
-            )
-          })}
+              {chatsData?.map((chat: any) => {
+                const { agent, name, id } = chat
+
+                const deleteChatHandler = () => {
+                  openModal({
+                    name: 'delete-confirmation-modal',
+                    data: {
+                      deleteItem: async () => {
+                        try {
+                          await deleteChat(id)
+                          await refetchChat()
+                          navigate('/chat')
+                          setToast({
+                            message: 'Chat was deleted!',
+                            type: 'positive',
+                            open: true,
+                          })
+                        } catch (e) {
+                          setToast({
+                            message: 'Failed to delete Chat!',
+                            type: 'negative',
+                            open: true,
+                          })
+                        }
+                        closeModal('delete-confirmation-modal')
+                      },
+                      label: 'Delete Chat?',
+                    },
+                  })
+                }
+
+                return (
+                  <CustomerChatCard
+                    key={id}
+                    picked={id === chatId}
+                    name={name}
+                    onClick={() => navigate(`/chat/client?chat=${id}`)}
+                    onDeleteClick={deleteChatHandler}
+                  />
+                )
+              })}
+            </>
+          )}
         </StyledList>
         <StyledMainWrapper>
           <StyledOutletWrapper>{outlet}</StyledOutletWrapper>
-          <StyledChatWrapper isHidden={location.pathname !== '/chat'}>
+          <StyledChatWrapper isHidden={!location.pathname.includes('/chat')}>
             <AIChat />
           </StyledChatWrapper>
         </StyledMainWrapper>

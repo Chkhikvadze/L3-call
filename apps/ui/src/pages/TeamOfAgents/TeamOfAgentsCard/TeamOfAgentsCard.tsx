@@ -18,6 +18,7 @@ import TypographySecondary from 'components/Typography/Secondary'
 import TypographyPrimary from 'components/Typography/Primary'
 import HeadingSecondary from 'components/Heading/Secondary'
 import { ButtonPrimary } from 'components/Button/Button'
+import { textSlicer } from 'utils/textSlicer'
 
 type TeamOfAgentCardProps = {
   name: string
@@ -44,10 +45,7 @@ const TeamOfAgentCard = ({
   avatar,
   teamType,
 }: TeamOfAgentCardProps) => {
-  let shortDescription = description || ''
-  if (description.length > 120) {
-    shortDescription = `${description.slice(0, 120)}...`
-  }
+  const { shortText: shortDescription } = textSlicer(description, 120)
 
   return (
     <StyledCard>
@@ -121,7 +119,7 @@ const TeamOfAgentCard = ({
             <StyledButtonWrapper className='footerButtons'>
               <IconButton
                 onClick={onDeleteClick}
-                icon={() => <Delete />}
+                icon={() => <StyledDeleteIcon />}
                 size={Button.sizes.SMALL}
                 kind={IconButton.kinds.TERTIARY}
                 // ariaLabel='Delete'
@@ -133,7 +131,7 @@ const TeamOfAgentCard = ({
             <StyledButtonWrapper className='footerButtons'>
               <IconButton
                 onClick={onEditClick}
-                icon={() => <Edit />}
+                icon={() => <StyledEditIcon />}
                 size={Button.sizes.SMALL}
                 kind={IconButton.kinds.TERTIARY}
                 // ariaLabel='Edit'
@@ -285,5 +283,17 @@ const StyledCreatorWrapper = styled.div`
 export const StyledEyeOpenIcon = styled(EyeOpen)`
   path {
     stroke: ${({ theme }) => theme.body.iconColor};
+  }
+`
+
+export const StyledDeleteIcon = styled(Delete)`
+  path {
+    fill: ${({ theme }) => theme.body.iconColor};
+  }
+`
+
+export const StyledEditIcon = styled(Edit)`
+  path {
+    fill: ${({ theme }) => theme.body.iconColor};
   }
 `

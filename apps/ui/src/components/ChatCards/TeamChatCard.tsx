@@ -5,11 +5,15 @@ import IconButton from '@l3-lib/ui-core/dist/IconButton'
 import Edit from '@l3-lib/ui-core/dist/icons/Edit'
 import EyeOpen from '@l3-lib/ui-core/dist/icons/EyeOpen'
 import styled, { css } from 'styled-components'
+import {
+  StyledEditIcon,
+  StyledEyeOpenIcon,
+} from 'pages/TeamOfAgents/TeamOfAgentsCard/TeamOfAgentsCard'
 
 type TeamChatCardProps = {
   onClick: () => void
-  onViewClick: (event: any) => void
-  onEditClick?: (event: any) => void
+  onViewClick: () => void
+  onEditClick?: () => void
   picked: boolean
   team: any
   agents: any
@@ -23,6 +27,18 @@ const TeamChatCard = ({
   team,
   agents,
 }: TeamChatCardProps) => {
+  const handleEdit = (event: any) => {
+    event.stopPropagation()
+    if (onEditClick) {
+      onEditClick()
+    }
+  }
+
+  const handleView = (event: any) => {
+    event.stopPropagation()
+    onViewClick()
+  }
+
   return (
     <StyledAgentWrapper onClick={onClick} picked={picked}>
       <AvatarGenerator name={team?.name} size={30} avatar={team.avatar} />
@@ -40,10 +56,10 @@ const TeamChatCard = ({
 
       <StyledIconButtonWrapper className='hiddenButton'>
         <IconButton
-          onClick={onViewClick}
+          onClick={handleView}
           icon={() => (
             <StyledIconWrapper>
-              <EyeOpen size={50} />
+              <StyledEyeOpenIcon size={50} />
             </StyledIconWrapper>
           )}
           size={IconButton.sizes.SMALL}
@@ -53,8 +69,8 @@ const TeamChatCard = ({
 
         {onEditClick && (
           <IconButton
-            onClick={onEditClick}
-            icon={() => <Edit />}
+            onClick={handleEdit}
+            icon={() => <StyledEditIcon />}
             size={IconButton.sizes.SMALL}
             kind={IconButton.kinds.TERTIARY}
             // ariaLabel='Edit'
