@@ -14,7 +14,7 @@ import Mobile from '@l3-lib/ui-core/dist/icons/Mobile'
 import Games from '@l3-lib/ui-core/dist/icons/Games'
 import ValueOutline from '@l3-lib/ui-core/dist/icons/ValueOutline'
 
-import Team from '@l3-lib/ui-core/dist/icons/Team'
+import Group from '@l3-lib/ui-core/dist/icons/Group'
 import Launch from '@l3-lib/ui-core/dist/icons/Launch'
 import SearchOutline from '@l3-lib/ui-core/dist/icons/SearchOutline'
 
@@ -168,7 +168,7 @@ const ChatSwitcher = ({ isChatOpen = false }: ChatSwitcherProps) => {
           tooltipSize='large'
         >
           <StyledIcon picked={includes(active, 'groups')} onClick={() => onHandleClick('/groups')}>
-            <StyledMobileIcon size={30} />
+            <StyledGroupIcon size={30} />
           </StyledIcon>
         </Tooltip>
       </StyledChatSwitcher>
@@ -310,7 +310,7 @@ const StyledIcon = styled.div<{ picked: boolean }>`
     `}
 `
 
-const StyledCollectionIcon = styled(Collection)`
+const StyledGroupIcon = styled(Group)`
   path {
     fill: ${({ theme }) => theme.body.iconColor};
   }
