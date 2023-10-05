@@ -16,7 +16,7 @@ import TempCard from 'pages/Group/TempCard'
 const Contacts = () => {
   const navigate = useNavigate()
 
-  const { contacts } = useContacts()
+  const { contacts, deleteContactHandler } = useContacts()
 
   return (
     <StyledSectionWrapper>
@@ -42,7 +42,7 @@ const Contacts = () => {
                 key={group.id}
                 name={group.name}
                 description={group.description}
-                // onDeleteClick={() => deleteGroupHandler(group.id)}
+                onDeleteClick={() => deleteContactHandler(group.id)}
               />
             )
           })}
