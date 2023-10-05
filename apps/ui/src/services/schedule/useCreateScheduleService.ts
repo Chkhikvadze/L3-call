@@ -6,13 +6,28 @@ import CREATE_SCHEDULE_GQL from '../../gql/ai/call/schedule/createSchedule.gql'
 interface CreateScheduleInput {
   name: string
   description: string
+  is_active: boolean
+  max_daily_budget: number
+  cron_expression: string
+  schedule_type: string
+  agent_id: string
+  group_id: string
 }
 
 export const useCreateScheduleService = () => {
   const [mutation] = useMutation(CREATE_SCHEDULE_GQL)
 
-  const createScheduleService = async (input: any) => {
-    // const { name, description } = input
+  const createScheduleService = async (input: CreateScheduleInput) => {
+    const {
+      name,
+      description,
+      is_active,
+      max_daily_budget,
+      cron_expression,
+      schedule_type,
+      agent_id,
+      group_id,
+    } = input
 
     const {
       data: { createSchedule },
@@ -20,16 +35,16 @@ export const useCreateScheduleService = () => {
       variables: {
         input: {
           schedule: {
-            is_active: truncate,
-            name: '',
-            schedule_type: 'Agent Type 1',
-            description: '',
-            max_daily_budget: 0.1,
-            cron_expression: 'cron expression',
+            is_active,
+            name,
+            schedule_type,
+            description,
+            max_daily_budget,
+            cron_expression,
           },
           configs: {
-            agent_id: '0ae8ff52-9b94-4e42-a07e-dfa0e9f4500e',
-            group_id: 'd87e6ede-9993-438c-8085-d5f00f09a51c',
+            agent_id,
+            group_id,
           },
         },
       },

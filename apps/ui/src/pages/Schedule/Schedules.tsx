@@ -39,12 +39,14 @@ const Schedules = () => {
 
       <ComponentsWrapper noPadding>
         <StyledCardsWrapper>
-          {schedules?.map((group: any) => {
+          {schedules?.map((scheduleObj: any) => {
+            const { schedule } = scheduleObj
+
             return (
               <TempCard
-                key={group.id}
-                name={group.name}
-                description={group.description}
+                key={schedule.id}
+                name={schedule.name}
+                description={schedule.description}
                 // onDeleteClick={() => deleteGroupHandler(group.id)}
               />
             )
