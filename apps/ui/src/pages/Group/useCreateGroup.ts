@@ -18,7 +18,7 @@ export const useCreateGroup = () => {
 
   const [createGroupService] = useCreateGroupService()
 
-  const { data: groups, refetch: refertGroups } = useGroupsService()
+  const { data: groups, refetch: refetchGroups } = useGroupsService()
 
   const initialValues = {
     group_name: '',
@@ -35,7 +35,7 @@ export const useCreateGroup = () => {
 
       await createGroupService(groupInput)
 
-      await refertGroups()
+      await refetchGroups()
       setToast({
         message: 'New Group was Created!',
         type: 'positive',

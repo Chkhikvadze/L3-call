@@ -14,7 +14,6 @@ import Loader from '@l3-lib/ui-core/dist/Loader'
 import Textarea from '@l3-lib/ui-core/dist/Textarea'
 import Typography from '@l3-lib/ui-core/dist/Typography'
 
-import { useCreateGroup } from '../useCreateGroup'
 import { FormikProvider } from 'formik'
 
 import FormikTextField from 'components/TextFieldFormik'
@@ -25,15 +24,16 @@ import {
   StyledTextareaWrapper,
 } from 'pages/Agents/AgentForm/AgentForm'
 import TypographyPrimary from 'components/Typography/Primary'
+import { useCreateContact } from '../useCreateContract'
 
-const CreateGroupForm = () => {
-  const { formik, isLoading } = useCreateGroup()
+const CreateContactForm = () => {
+  const { formik, isLoading } = useCreateContact()
 
   const { values, setFieldValue } = formik
-  const { group_description } = values
+  const { contact_description } = values
 
   const onDescriptionChange = (value: string) => {
-    setFieldValue('group_description', value)
+    setFieldValue('contact_description', value)
   }
 
   return (
@@ -41,10 +41,10 @@ const CreateGroupForm = () => {
       <StyledSectionWrapper>
         <StyledHeaderGroup className='header_group'>
           <div>
-            <StyledSectionTitle>Add Group</StyledSectionTitle>
+            <StyledSectionTitle>Add Contact</StyledSectionTitle>
             {/* <StyledSectionDescription>
-            Here is your datasource, a collection of databases, APIs, files, and more.
-          </StyledSectionDescription> */}
+        Here is your datasource, a collection of databases, APIs, files, and more.
+      </StyledSectionDescription> */}
           </div>
 
           <StyledButtonWrapper>
@@ -64,7 +64,7 @@ const CreateGroupForm = () => {
             <StyledRoot>
               <StyledForm>
                 <StyledInputWrapper>
-                  <FormikTextField name='group_name' placeholder='Name' label='Name' />
+                  <FormikTextField name='contact_name' placeholder='Name' label='Name' />
 
                   <StyledTextareaWrapper>
                     <TypographyPrimary
@@ -75,10 +75,13 @@ const CreateGroupForm = () => {
                     <Textarea
                       hint=''
                       placeholder='Description'
-                      name='group_description'
-                      value={group_description}
+                      name='contact_description'
+                      value={contact_description}
                       onChange={onDescriptionChange}
                     />
+
+                    <FormikTextField name='contact_phone' placeholder='Phone' label='Phone' />
+                    <FormikTextField name='contact_email' placeholder='Email' label='Email' />
                   </StyledTextareaWrapper>
                 </StyledInputWrapper>
               </StyledForm>
@@ -90,4 +93,4 @@ const CreateGroupForm = () => {
   )
 }
 
-export default CreateGroupForm
+export default CreateContactForm

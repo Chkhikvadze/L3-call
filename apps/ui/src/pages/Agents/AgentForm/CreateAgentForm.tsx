@@ -62,7 +62,7 @@ export default CreateAgentForm
 export const StyledFormWrapper = styled.div`
   width: 100%;
 
-  height: calc(100vh - 225px);
+  height: calc(100vh - 235px);
 
   max-height: 1000px;
 `

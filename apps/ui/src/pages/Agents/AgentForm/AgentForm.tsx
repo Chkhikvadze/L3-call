@@ -151,7 +151,7 @@ const AgentForm = ({ formik }: AgentFormProps) => {
 
 export default AgentForm
 
-const StyledRoot = styled.div`
+export const StyledRoot = styled.div`
   width: 100%;
 
   height: 100%;

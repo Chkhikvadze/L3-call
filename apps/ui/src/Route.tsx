@@ -81,6 +81,7 @@ import ChatLinkModal from 'modals/ChatLinkModal'
 import Contacts from 'pages/Contact'
 import Groups from 'pages/Group'
 import CreateGroupForm from 'pages/Group/GroupForm/CreateGroupForm'
+import CreateContactForm from 'pages/Contact/ContactForm/CreateContactForm'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -211,17 +212,11 @@ const Route = () => {
 
             <Router path={'contacts'} element={<MainRouteLayout />} key={document.location.href}>
               <Router index element={<Contacts />} key={document.location.href} />
-              {/* <Router path={':datasourceId'} element={<AgentView />} key={document.location.href} />
               <Router
-                path={'create-datasource'}
-                element={<CreateDatasourceForm />}
+                path={'create-contact'}
+                element={<CreateContactForm />}
                 key={document.location.href}
               />
-              <Router
-                path={':datasourceId/edit-datasource'}
-                element={<EditDatasourceForm />}
-                key={document.location.href}
-              /> */}
             </Router>
 
             <Router path={'groups'} element={<MainRouteLayout />} key={document.location.href}>
