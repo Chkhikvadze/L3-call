@@ -10,7 +10,7 @@ import { useChatSwitcher } from './useChatSwitcher'
 import MainNavigation from 'pages/Navigation/MainNavigation'
 
 import About from '@l3-lib/ui-core/dist/icons/About'
-import Add from '@l3-lib/ui-core/dist/icons/Add'
+import Mobile from '@l3-lib/ui-core/dist/icons/Mobile'
 import Games from '@l3-lib/ui-core/dist/icons/Games'
 import ValueOutline from '@l3-lib/ui-core/dist/icons/ValueOutline'
 
@@ -148,6 +148,19 @@ const ChatSwitcher = ({ isChatOpen = false }: ChatSwitcherProps) => {
             <StyledSearchOutlineIcon />
           </StyledIcon>
         </Tooltip>
+
+        <Tooltip
+          content={() => <span>Contacts</span>}
+          position={Tooltip.positions.RIGHT}
+          tooltipSize='large'
+        >
+          <StyledIcon
+            picked={includes(active, 'contacts')}
+            onClick={() => onHandleClick('/contacts')}
+          >
+            <StyledMobileIcon size={30} />
+          </StyledIcon>
+        </Tooltip>
       </StyledChatSwitcher>
       {/* <MainNavigation /> */}
     </StyledRoot>
@@ -282,10 +295,9 @@ const StyledIcon = styled.div<{ picked: boolean }>`
       &:hover {
         background: rgba(255, 255, 255, 0.3);
         background: ${({ theme }) => theme.body.breadCrumbsBg};
-    }
-        cursor: auto;
       }
-    `};
+      cursor: auto;
+    `}
 `
 
 const StyledCollectionIcon = styled(Collection)`
@@ -319,6 +331,11 @@ const StyledValueOutlineIcon = styled(ValueOutline)`
 `
 
 const StyledSearchOutlineIcon = styled(SearchOutline)`
+  path {
+    fill: ${({ theme }) => theme.body.iconColor};
+  }
+`
+const StyledMobileIcon = styled(Mobile)`
   path {
     fill: ${({ theme }) => theme.body.iconColor};
   }

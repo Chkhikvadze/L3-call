@@ -78,6 +78,7 @@ import ChatRouteLayout from 'routes/ChatRouteLayout'
 
 import ClientChat from 'modals/AIChatModal/components/ClientChat'
 import ChatLinkModal from 'modals/ChatLinkModal'
+import Contacts from 'pages/Contact'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -205,6 +206,22 @@ const Route = () => {
                 key={document.location.href}
               />
             </Router>
+
+            <Router path={'contacts'} element={<MainRouteLayout />} key={document.location.href}>
+              <Router index element={<Contacts />} key={document.location.href} />
+              {/* <Router path={':datasourceId'} element={<AgentView />} key={document.location.href} />
+              <Router
+                path={'create-datasource'}
+                element={<CreateDatasourceForm />}
+                key={document.location.href}
+              />
+              <Router
+                path={':datasourceId/edit-datasource'}
+                element={<EditDatasourceForm />}
+                key={document.location.href}
+              /> */}
+            </Router>
+
             <Router
               path={'team-of-agents'}
               element={<ChatRouteLayout />}

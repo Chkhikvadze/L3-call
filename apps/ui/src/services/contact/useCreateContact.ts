@@ -21,7 +21,7 @@ export const useCreateContactService = () => {
         input: {
           name: 'First test',
           description: 'desc',
-          group_id: '',
+          group_id: 'd87e6ede-9993-438c-8085-d5f00f09a51c',
           email: 'Levanion1998@gmail.com',
           phone: '592444502',
         },
