@@ -80,6 +80,7 @@ import ClientChat from 'modals/AIChatModal/components/ClientChat'
 import ChatLinkModal from 'modals/ChatLinkModal'
 import Contacts from 'pages/Contact'
 import Groups from 'pages/Group'
+import CreateGroupForm from 'pages/Group/GroupForm/CreateGroupForm'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -225,6 +226,11 @@ const Route = () => {
 
             <Router path={'groups'} element={<MainRouteLayout />} key={document.location.href}>
               <Router index element={<Groups />} key={document.location.href} />
+              <Router
+                path={'create-group'}
+                element={<CreateGroupForm />}
+                key={document.location.href}
+              />
             </Router>
 
             <Router

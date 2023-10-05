@@ -158,7 +158,7 @@ const StyledRoot = styled.div`
   overflow-y: scroll;
 `
 
-const StyledForm = styled.div`
+export const StyledForm = styled.div`
   width: 100%;
   /* max-width: 600px; */
   height: 100%;
@@ -170,7 +170,7 @@ const StyledForm = styled.div`
   justify-content: center;
 `
 
-const StyledInputWrapper = styled.div`
+export const StyledInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
