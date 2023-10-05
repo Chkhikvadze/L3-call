@@ -171,6 +171,19 @@ const ChatSwitcher = ({ isChatOpen = false }: ChatSwitcherProps) => {
             <StyledGroupIcon size={30} />
           </StyledIcon>
         </Tooltip>
+
+        <Tooltip
+          content={() => <span>Schedules</span>}
+          position={Tooltip.positions.RIGHT}
+          tooltipSize='large'
+        >
+          <StyledIcon
+            picked={includes(active, 'schedules')}
+            onClick={() => onHandleClick('/schedules')}
+          >
+            <StyledGroupIcon size={30} />
+          </StyledIcon>
+        </Tooltip>
       </StyledChatSwitcher>
       {/* <MainNavigation /> */}
     </StyledRoot>

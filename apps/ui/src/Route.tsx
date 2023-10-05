@@ -82,6 +82,7 @@ import Contacts from 'pages/Contact'
 import Groups from 'pages/Group'
 import CreateGroupForm from 'pages/Group/GroupForm/CreateGroupForm'
 import CreateContactForm from 'pages/Contact/ContactForm/CreateContactForm'
+import Schedule from 'pages/Schedule'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -226,6 +227,14 @@ const Route = () => {
                 element={<CreateGroupForm />}
                 key={document.location.href}
               />
+            </Router>
+            <Router path={'schedules'} element={<MainRouteLayout />} key={document.location.href}>
+              <Router index element={<Schedule />} key={document.location.href} />
+              {/* <Router
+                path={'create-group'}
+                element={<CreateGroupForm />}
+                key={document.location.href}
+              /> */}
             </Router>
 
             <Router
