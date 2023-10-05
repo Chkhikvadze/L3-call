@@ -1,4 +1,3 @@
-import { useCreateScheduleService } from 'services/schedule/useCreateScheduleService'
 import { useSchedulesService } from 'services/schedule/useSchedulesService'
 
 import { ButtonPrimary } from 'components/Button/Button'
@@ -14,12 +13,12 @@ import {
 
 import { useNavigate } from 'react-router-dom'
 import TempCard from 'pages/Group/TempCard'
+import { useSchedules } from './useSchedules'
 
 const Schedules = () => {
   const navigate = useNavigate()
 
-  const { data: schedules } = useSchedulesService()
-  const [createScheduleService] = useCreateScheduleService()
+  const { deleteScheduleHandler, schedules } = useSchedules()
 
   return (
     <StyledSectionWrapper>
@@ -47,7 +46,7 @@ const Schedules = () => {
                 key={schedule.id}
                 name={schedule.name}
                 description={schedule.description}
-                // onDeleteClick={() => deleteGroupHandler(group.id)}
+                onDeleteClick={() => deleteScheduleHandler(schedule.id)}
               />
             )
           })}
