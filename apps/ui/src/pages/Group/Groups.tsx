@@ -15,7 +15,7 @@ import TempCard from './TempCard'
 import { useGroups } from './useGroups'
 
 const Groups = () => {
-  const { groups } = useGroups()
+  const { groups, deleteGroupHandler } = useGroups()
 
   const navigate = useNavigate()
 
@@ -38,7 +38,14 @@ const Groups = () => {
       <ComponentsWrapper noPadding>
         <StyledCardsWrapper>
           {groups?.map((group: any) => {
-            return <TempCard key={group.id} name={group.name} description={group.description} />
+            return (
+              <TempCard
+                key={group.id}
+                name={group.name}
+                description={group.description}
+                onDeleteClick={() => deleteGroupHandler(group.id)}
+              />
+            )
           })}
         </StyledCardsWrapper>
       </ComponentsWrapper>
