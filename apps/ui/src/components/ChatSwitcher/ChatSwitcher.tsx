@@ -15,7 +15,7 @@ import Games from '@l3-lib/ui-core/dist/icons/Games'
 import ValueOutline from '@l3-lib/ui-core/dist/icons/ValueOutline'
 
 import Group from '@l3-lib/ui-core/dist/icons/Group'
-import Launch from '@l3-lib/ui-core/dist/icons/Launch'
+import MyWeek from '@l3-lib/ui-core/dist/icons/MyWeek'
 import SearchOutline from '@l3-lib/ui-core/dist/icons/SearchOutline'
 
 import { useEffect, useState } from 'react'
@@ -181,7 +181,7 @@ const ChatSwitcher = ({ isChatOpen = false }: ChatSwitcherProps) => {
             picked={includes(active, 'schedules')}
             onClick={() => onHandleClick('/schedules')}
           >
-            <StyledGroupIcon size={30} />
+            <StyledMyWeekIcon size={30} />
           </StyledIcon>
         </Tooltip>
       </StyledChatSwitcher>
@@ -359,6 +359,11 @@ const StyledSearchOutlineIcon = styled(SearchOutline)`
   }
 `
 const StyledMobileIcon = styled(Mobile)`
+  path {
+    fill: ${({ theme }) => theme.body.iconColor};
+  }
+`
+const StyledMyWeekIcon = styled(MyWeek)`
   path {
     fill: ${({ theme }) => theme.body.iconColor};
   }
