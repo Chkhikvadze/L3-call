@@ -1,5 +1,5 @@
-query getSchedule @api(name: "ai") {
-  getSchedule @rest(type: "Group", path: "/group", method: "GET", endpoint: "ai") {
+query getSchedules @api(name: "ai") {
+  getSchedules @rest(type: "schedule", path: "/schedule", method: "GET", endpoint: "ai") {
     schedule {
       id
       is_active
