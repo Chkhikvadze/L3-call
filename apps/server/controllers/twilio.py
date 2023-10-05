@@ -319,32 +319,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 #     return response
 
-@router.post("/text-to-speech", status_code=201)
-def text_to_speech():
-    """Text to speech"""
-    text =   "Hello Leeroy! How's everything going for you today? I'm thrilled to introduce you to our range of premium products. Whether you're interested in iPhones, MacBooks, AirPods, or something else from our collection, we have it all. Just let me know your preference, and I'll be delighted to assist you further!"
-    url = "https://play.ht/api/v2/tts/stream"
 
-    payload = {
-        "text": text,
-        "voice": "larry",
-        "quality": "draft",
-        "output_format": "mp3",
-        "speed": 1,
-        "sample_rate": 24000
-    }
-    headers = {
-        "accept": "application/json",
-        "content-type": "application/json",
-        "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
-        "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2"
-    }
-
-    response = requests.post(url, json=payload, headers=headers)
-
-    response_json = json.loads(response.text)
-
-    return response_json['href']
 
 @router.get("/audio-proxy/cowbell.mp3")
 # async def audio_proxy():
@@ -399,7 +374,32 @@ async def audio_proxy():
 
     return StreamingResponse(content_generator(), media_type="audio/mpeg")
 
+@router.post("/text-to-speech", status_code=201)
+def text_to_speech():
+    """Text to speech"""
+    text =   "Hello Leeroy! How's everything going for you today? I'm thrilled to introduce you to our range of premium products. Whether you're interested in iPhones, MacBooks, AirPods, or something else from our collection, we have it all. Just let me know your preference, and I'll be delighted to assist you further!"
+    url = "https://play.ht/api/v2/tts/stream"
 
+    payload = {
+        "text": text,
+        "voice": "larry",
+        "quality": "draft",
+        "output_format": "mp3",
+        "speed": 1,
+        "sample_rate": 24000
+    }
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "AUTHORIZATION": "Bearer 56b08c59cc2e44c5bbdb2e6b9ac7b038",
+        "X-USER-ID": "NF9Psaqy2cOKRDqrUVs2bYnELWW2"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    response_json = json.loads(response.text)
+
+    return response_json['href']
 
 @router.get("/fetch_audio/")
 def fetch_audio():

@@ -16,17 +16,17 @@ from models.db import Base, engine
 
 
 from controllers.auth import router as user_router
-# from controllers.workspace import router as workspace_router
-# from controllers.team import router as team_router
-# from controllers.team_agent import router as team_agent_router
+from controllers.workspace import router as workspace_router
+from controllers.team import router as team_router
+from controllers.team_agent import router as team_agent_router
 
 from controllers.agent import router as agent_router
 from controllers.configuration import router as config_router
-# from controllers.datasource import router as datasource_router
+from controllers.datasource import router as datasource_router
 from controllers.tool import router as tool_router
-# from controllers.llm import router as llm_router
-# from controllers.chat import router as chat_router
-# from controllers.file import router as file_router
+from controllers.llm import router as llm_router
+from controllers.chat import router as chat_router
+from controllers.file import router as file_router
 from controllers.twilio import router as twilio_router
 from controllers.contact import router as contact_router
 from controllers.schedule import router as schedule_router
@@ -72,7 +72,7 @@ if Config.ENV != "local" and Config.SENTRY_DSN:
 app.add_middleware(DBSessionMiddleware, db_url=Config.DB_URI)
 
 # Base.metadata.drop_all(bind=engine)
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost:3000",
@@ -107,16 +107,16 @@ def jwt_exception_handler(request: Request, exc: AuthJWTException):
     )
 
 app.include_router(user_router, prefix="/auth")
-# app.include_router(workspace_router, prefix="/workspace")
-# app.include_router(team_router, prefix="/team")
-# app.include_router(team_agent_router, prefix="/team-of-agents")
+app.include_router(workspace_router, prefix="/workspace")
+app.include_router(team_router, prefix="/team")
+app.include_router(team_agent_router, prefix="/team-of-agents")
 app.include_router(agent_router, prefix="/agent")
 app.include_router(config_router, prefix="/config")
-# app.include_router(datasource_router, prefix="/datasource")
+app.include_router(datasource_router, prefix="/datasource")
 app.include_router(tool_router, prefix="/tool")
-# app.include_router(llm_router, prefix="/llm")
-# app.include_router(chat_router, prefix="/chat")
-# app.include_router(file_router, prefix="/file")
+app.include_router(llm_router, prefix="/llm")
+app.include_router(chat_router, prefix="/chat")
+app.include_router(file_router, prefix="/file")
 app.include_router(twilio_router, prefix="/twilio")
 app.include_router(contact_router, prefix="/contact")
 app.include_router(schedule_router, prefix="/schedule")
