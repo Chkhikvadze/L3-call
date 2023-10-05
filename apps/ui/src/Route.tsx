@@ -79,6 +79,7 @@ import ChatRouteLayout from 'routes/ChatRouteLayout'
 import ClientChat from 'modals/AIChatModal/components/ClientChat'
 import ChatLinkModal from 'modals/ChatLinkModal'
 import Contacts from 'pages/Contact'
+import Groups from 'pages/Group'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -220,6 +221,10 @@ const Route = () => {
                 element={<EditDatasourceForm />}
                 key={document.location.href}
               /> */}
+            </Router>
+
+            <Router path={'groups'} element={<MainRouteLayout />} key={document.location.href}>
+              <Router index element={<Groups />} key={document.location.href} />
             </Router>
 
             <Router
