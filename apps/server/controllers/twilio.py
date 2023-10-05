@@ -21,6 +21,8 @@ import httpx
 
 from fastapi import HTTPException
 from fastapi.responses import StreamingResponse
+from twilio.twiml.voice_response import Connect, VoiceResponse
+
 
 router = APIRouter()
 
@@ -28,57 +30,90 @@ domain =  "l3agi.ngrok.dev"
 socket_url = 'wss://l3agi.ngrok.dev/twilio/media'
 # socker_url = 'wss://localhost:4000/twilio/media'
 
+
+@router.post("/call/connect", status_code=200)
+def connect(req: Request):
+    response = VoiceResponse()
+    connect = Connect(action='https://l3agi.ngrok.dev/twilio/twiml')
+    connect.virtual_agent(
+        connector_name='connector-friendly-name-giga', status_callback='https://l3agi.ngrok.dev/twilio/voice/connector/cx'
+    )
+    response.append(connect)
+
+    print(response)
+    return 1
+
 @router.post("/call/outbound", status_code=200)
+# def make_call(req: Request, res: Response):
+#     """Description"""
+#     account_sid = "AC3a1cd89b4f2908071affc1f56f23b2d5" #self.get_env_key("TWILIO_ACCOUNT_SID")
+#     auth_token = "6c176f0f6495f82fa6b7ed06eb1c64ae" #self.get_env_key("TWILIO_AUTH_TOKEN")
+#     # from_number = "+13345648359" #self.get_env_key("TWILIO_FROM_NUMBER")
+#     # to='+995597570605',
+    
+    
+#     say =f"""<Say>Ahoy there, are you here Giga!</Say>"""
+#     # play = f"""<Play oop="0>https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
+#     # play = f"""<Play loop="10">https://api.twilio.com/cowbell.mp3</Play>"""
+#     # play = f"""<Play loop="1">https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
+    
+#     record_url = "https://l3agi.ngrok.dev/twilio/voice/record"
+#     record = f"""<Record timeout="30" transcribe="true" recordingStatusCallback="{record_url}"/>"""
+                    
+                    
+#     start = f"""<Start>
+#                     <Stream url="{socket_url}" />
+#                 </Start>"""
+#     twiml=f"""
+#     <Response>
+#         {start}
+#         {record}
+#         {connect}
+#     </Response>
+#     """
+#     client = Client(account_sid, auth_token)
+#     call = client.calls.create(
+#                 record=True,
+#                 # url='http://demo.twilio.com/docs/voice.xml',
+#                 twiml=twiml,               
+                
+                
+#                 # to='+18052901594',
+#                 to='+995597570605',
+                
+                
+#                 from_='+18052901594'
+#                 # from_='+995597570605'
+#             )
+#     print(call.sid)
+#     return {
+#         "sid": call.sid,
+#     }
 def make_call(req: Request, res: Response):
     """Description"""
-    account_sid = "AC3a1cd89b4f2908071affc1f56f23b2d5" #self.get_env_key("TWILIO_ACCOUNT_SID")
-    auth_token = "6c176f0f6495f82fa6b7ed06eb1c64ae" #self.get_env_key("TWILIO_AUTH_TOKEN")
-    # from_number = "+13345648359" #self.get_env_key("TWILIO_FROM_NUMBER")
-    # to='+995597570605',
+    account_sid = "AC3a1cd89b4f2908071affc1f56f23b2d5"
+    auth_token = "6c176f0f6495f82fa6b7ed06eb1c64ae"
     
-    
-    say =f"""<Say>Ahoy there, are you here Giga!</Say>"""
-    # play = f"""<Play oop="0>https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
-    # play = f"""<Play loop="10">https://api.twilio.com/cowbell.mp3</Play>"""
-    play = f"""<Play loop="1">https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
-    
-    connect=f"""<Connect action="https://myactionurl.com/twiml" >
-                    <VirtualAgent connectorName="project" statusCallback="https://mycallbackurl.com"/>
-                </Connect>"""
-                    
-    record_url = "https://l3agi.ngrok.dev/twilio/voice/record"
-    record = f"""<Record timeout="30" transcribe="true" recordingStatusCallback="{record_url}"/>"""
-                    
-                    
-    start = f"""<Start>
-                    <Stream url="{socket_url}" />
-                </Start>"""
-    twiml=f"""
-    <Response>
-        {play}
-        {start}
-        {record}
-    </Response>
-    """
+    # Generate the TwiML for connecting to a virtual agent
+    response = VoiceResponse()
+    connect = Connect(action='https://l3agi.ngrok.dev/twilio/twiml')
+    connect.virtual_agent(
+        connector_name='connector-friendly-name-giga', 
+        status_callback='https://l3agi.ngrok.dev/twilio/voice/connector/cx'
+    )
+    response.append(connect)
+    twiml = str(response)  # Convert the VoiceResponse object to a string
+
     client = Client(account_sid, auth_token)
     call = client.calls.create(
-                record=True,
-                # url='http://demo.twilio.com/docs/voice.xml',
-                twiml=twiml,               
-                
-                
-                # to='+18052901594',
-                to='+995597570605',
-                
-                
-                from_='+18052901594'
-                # from_='+995597570605'
-            )
+        twiml=twiml,
+        to='+995597570605',
+        from_='+18052901594'
+    )
     print(call.sid)
     return {
         "sid": call.sid,
     }
-    
     
 @router.post("/voice/webhook", status_code=200)
 def webhook_voice(req: Request, res: Response):
@@ -120,6 +155,36 @@ async def record(request: Request):
     # Process the data as needed
     return {"status": "success"}
 
+@router.get("/twiml")
+async def record(request: Request):
+    print(request)
+    
+    say =f"""<Say>Ahoy there, are you here Giga!</Say>"""
+    # play = f"""<Play oop="0>https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
+    # play = f"""<Play loop="10">https://api.twilio.com/cowbell.mp3</Play>"""
+    # play = f"""<Play loop="1">https://l3agi.ngrok.dev/twilio/audio-proxy/cowbell.mp3</Play>"""
+    
+    connect=f"""<Connect>
+                    <VirtualAgent connectorName="connector-friendly-name-giga" statusCallback="https://l3agi.ngrok.dev/twilio/voice/connector/cx">
+                        <Parameter name="customer_name" value="Burton Guster"/>
+                    </VirtualAgent>                    
+                </Connect>"""
+                    
+    record_url = "https://l3agi.ngrok.dev/twilio/voice/record"
+    record = f"""<Record timeout="30" transcribe="true" recordingStatusCallback="{record_url}"/>"""
+                    
+                    
+    start = f"""<Start>
+                    <Stream url="{socket_url}" />
+                </Start>"""
+    twiml=f"""
+    <Response>
+        {say}
+    </Response>
+    """
+    return twiml
+
+
 @router.post("/voice/dialog")
 async def record(request: Request):
     print(request)
@@ -130,6 +195,30 @@ async def record(request: Request):
     # print(record_data.RecordingDuration)  # Access the recording duration
     # Process the data as needed
     return {"status": "success"}
+
+@router.get("/voice/cx")
+async def record(request: Request):
+    print(request)
+    # form_data = await request.form()
+    # record_data = RecordData(**form_data)
+    # print(record_data.RecordingUrl)  # Access the recording URL
+    # print(record_data.RecordingSid)  # Access the recording SID
+    # print(record_data.RecordingDuration)  # Access the recording duration
+    # Process the data as needed
+    return {"status": "success"}
+
+@router.get("/voice/connector/cx")
+async def record(request: Request):
+    print(request, 'get')
+
+    return {"status": "success"}
+
+@router.post("/voice/connector/cx")
+async def record(request: Request):
+    print(request, 'post')
+
+    return {"status": "success"}
+
 
 
 
@@ -312,7 +401,7 @@ async def audio_proxy():
 
 
 
-@app.get("/fetch_audio/")
+@router.get("/fetch_audio/")
 def fetch_audio():
     TTS_URL = text_to_speech()
 
