@@ -13,8 +13,11 @@ export const useScheduleForm = () => {
     return { label: group.name, value: group.id }
   })
 
+  const scheduleTypeOptions = [{ label: 'Outbound Calling', value: 'Outbound Calling' }]
+
   return {
     agentOptions,
     groupOptions,
+    scheduleTypeOptions,
   }
 }

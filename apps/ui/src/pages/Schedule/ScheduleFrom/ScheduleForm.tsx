@@ -14,13 +14,13 @@ import AgentDropdown from 'pages/Agents/AgentForm/components/AgentDropdown'
 
 const ScheduleForm = ({ formik }: { formik: any }) => {
   const { values, setFieldValue } = formik
-  const { schedule_description, schedule_group_id, schedule_agent_id } = values
+  const { schedule_description, schedule_group_id, schedule_agent_id, schedule_type } = values
 
   const onDescriptionChange = (value: string) => {
     setFieldValue('schedule_description', value)
   }
 
-  const { agentOptions, groupOptions } = useScheduleForm()
+  const { agentOptions, groupOptions, scheduleTypeOptions } = useScheduleForm()
 
   return (
     <StyledRoot>
@@ -28,7 +28,14 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
         <StyledInputWrapper>
           <FormikTextField name='schedule_name' placeholder='Name' label='Name' />
 
-          <FormikTextField name='schedule_type' placeholder='Type' label='Type' />
+          <AgentDropdown
+            label={'Schedule'}
+            fieldName={'schedule_type'}
+            setFieldValue={setFieldValue}
+            fieldValue={schedule_type}
+            options={scheduleTypeOptions}
+            optionSize={'small'}
+          />
 
           <FormikTextField
             name='schedule_cron_expression'
