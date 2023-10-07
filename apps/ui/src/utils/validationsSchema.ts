@@ -44,3 +44,7 @@ export const scheduleValidationSchema = yup.object().shape({
     .positive('Budget must be a positive number')
     .min(0.1, 'Budget must be at least 0.1'),
 })
+
+export const groupValidationSchema = yup.object().shape({
+  group_name: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter name'),
+})

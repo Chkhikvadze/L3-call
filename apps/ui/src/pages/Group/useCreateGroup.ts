@@ -7,6 +7,7 @@ import { useModal } from 'hooks'
 
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
+import { groupValidationSchema } from 'utils/validationsSchema'
 
 export const useCreateGroup = () => {
   const navigate = useNavigate()
@@ -54,7 +55,7 @@ export const useCreateGroup = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
-
+    validationSchema: groupValidationSchema,
     onSubmit: async values => handleSubmit(values),
   })
 
