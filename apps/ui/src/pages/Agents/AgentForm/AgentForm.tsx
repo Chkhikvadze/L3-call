@@ -199,7 +199,7 @@ export const StyledTextareaWrapper = styled.div`
     font-size: 14px;
   }
 `
-const StyledCheckboxWrapper = styled.div`
+export const StyledCheckboxWrapper = styled.div`
   height: fit-content;
   padding-bottom: 5px;
 `

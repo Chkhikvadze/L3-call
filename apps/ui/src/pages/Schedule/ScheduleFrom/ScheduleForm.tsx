@@ -1,8 +1,10 @@
 import Textarea from '@l3-lib/ui-core/dist/Textarea'
 import Typography from '@l3-lib/ui-core/dist/Typography'
+import Checkbox from '@l3-lib/ui-core/dist/Checkbox'
 
 import FormikTextField from 'components/TextFieldFormik'
 import {
+  StyledCheckboxWrapper,
   StyledForm,
   StyledInputWrapper,
   StyledRoot,
@@ -14,7 +16,13 @@ import AgentDropdown from 'pages/Agents/AgentForm/components/AgentDropdown'
 
 const ScheduleForm = ({ formik }: { formik: any }) => {
   const { values, setFieldValue } = formik
-  const { schedule_description, schedule_group_id, schedule_agent_id, schedule_type } = values
+  const {
+    schedule_description,
+    schedule_group_id,
+    schedule_agent_id,
+    schedule_type,
+    schedule_is_active,
+  } = values
 
   const onDescriptionChange = (value: string) => {
     setFieldValue('schedule_description', value)
@@ -29,7 +37,7 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
           <FormikTextField name='schedule_name' placeholder='Name' label='Name' />
 
           <AgentDropdown
-            label={'Schedule'}
+            label={'Schedule Type'}
             fieldName={'schedule_type'}
             setFieldValue={setFieldValue}
             fieldValue={schedule_type}
@@ -74,6 +82,16 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
             options={groupOptions}
             optionSize={'small'}
           />
+
+          <StyledCheckboxWrapper>
+            <Checkbox
+              label='Active'
+              kind='secondary'
+              name='schedule_is_active'
+              checked={schedule_is_active}
+              onChange={() => setFieldValue('schedule_is_active', !schedule_is_active)}
+            />
+          </StyledCheckboxWrapper>
         </StyledInputWrapper>
       </StyledForm>
     </StyledRoot>
