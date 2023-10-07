@@ -25,6 +25,7 @@ import {
 } from 'pages/Agents/AgentForm/AgentForm'
 import TypographyPrimary from 'components/Typography/Primary'
 import { useCreateSchedule } from '../useCreateSchedule'
+import ScheduleForm from './ScheduleForm'
 
 const CreateScheduleForm = () => {
   const { formik, isLoading } = useCreateSchedule()
@@ -61,28 +62,7 @@ const CreateScheduleForm = () => {
 
         <ComponentsWrapper noPadding>
           <StyledFormWrapper>
-            <StyledRoot>
-              <StyledForm>
-                <StyledInputWrapper>
-                  <FormikTextField name='schedule_name' placeholder='Name' label='Name' />
-
-                  <StyledTextareaWrapper>
-                    <TypographyPrimary
-                      value='Description'
-                      type={Typography.types.LABEL}
-                      size={Typography.sizes.md}
-                    />
-                    <Textarea
-                      hint=''
-                      placeholder='Description'
-                      name='schedule_description'
-                      value={schedule_description}
-                      onChange={onDescriptionChange}
-                    />
-                  </StyledTextareaWrapper>
-                </StyledInputWrapper>
-              </StyledForm>
-            </StyledRoot>
+            <ScheduleForm formik={formik} />
           </StyledFormWrapper>
         </ComponentsWrapper>
       </StyledSectionWrapper>

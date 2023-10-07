@@ -27,8 +27,8 @@ export const useCreateSchedule = () => {
     schedule_max_daily_budget: 0.1,
     schedule_cron_expression: '',
     schedule_type: '',
-    schedule_agent_id: '0ae8ff52-9b94-4e42-a07e-dfa0e9f4500e',
-    schedule_group_id: 'd87e6ede-9993-438c-8085-d5f00f09a51c',
+    schedule_agent_id: '',
+    schedule_group_id: '',
   }
 
   const handleSubmit = async (values: any) => {
