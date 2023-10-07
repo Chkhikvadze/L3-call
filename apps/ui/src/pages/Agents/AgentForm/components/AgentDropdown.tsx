@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Dropdown from '@l3-lib/ui-core/dist/Dropdown'
 import Typography from '@l3-lib/ui-core/dist/Typography'
 import TypographyPrimary from 'components/Typography/Primary'
+import { Field } from 'formik'
 
 type AgentDropdownProps = {
   label: string
@@ -56,23 +57,42 @@ const AgentDropdown = ({
     return <TypographyPrimary value={label} type={Typography.types.LABEL} size={optionSize} />
   }
 
+  const input_name = fieldName
+
   return (
-    <StyledWrapper>
-      <TypographyPrimary value={label} type={Typography.types.LABEL} size={Typography.sizes.md} />
-      <Dropdown
-        multi={isMulti}
-        menuPlacement={'top'}
-        // insideOverflow
-        multiline
-        size={Dropdown.size.MEDIUM}
-        value={value}
-        placeholder={value}
-        options={options}
-        onChange={onChangeFunction}
-        onOptionRemove={onOptionRemove}
-        OptionRenderer={OptionRenderer}
-      />
-    </StyledWrapper>
+    <Field name={input_name}>
+      {(formik: any) => {
+        const { field, meta, form } = formik
+
+        return (
+          <StyledWrapper>
+            <TypographyPrimary
+              value={label}
+              type={Typography.types.LABEL}
+              size={Typography.sizes.md}
+            />
+            <Dropdown
+              multi={isMulti}
+              menuPlacement={'top'}
+              // insideOverflow
+              multiline
+              size={Dropdown.size.MEDIUM}
+              value={value}
+              placeholder={value}
+              options={options}
+              onChange={onChangeFunction}
+              onOptionRemove={onOptionRemove}
+              OptionRenderer={OptionRenderer}
+            />
+            {meta.error && (
+              <StyledError>
+                <span>{meta.error}</span>
+              </StyledError>
+            )}
+          </StyledWrapper>
+        )
+      }}
+    </Field>
   )
 }
 
@@ -83,4 +103,9 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
+`
+const StyledError = styled.span`
+  color: #e23248;
+  font-size: 14px;
+  line-height: 14px;
 `

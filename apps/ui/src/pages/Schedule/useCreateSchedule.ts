@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useSchedulesService } from 'services/schedule/useSchedulesService'
 import { useCreateScheduleService } from 'services/schedule/useCreateScheduleService'
+import { scheduleValidationSchema } from 'utils/validationsSchema'
 
 export const useCreateSchedule = () => {
   const navigate = useNavigate()
@@ -66,7 +67,7 @@ export const useCreateSchedule = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
-
+    validationSchema: scheduleValidationSchema,
     onSubmit: async values => handleSubmit(values),
   })
 

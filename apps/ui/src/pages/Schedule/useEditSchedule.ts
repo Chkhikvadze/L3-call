@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useScheduleByIdService } from 'services/schedule/useScheduleByIdService'
 import { useSchedulesService } from 'services/schedule/useSchedulesService'
 import { useUpdateScheduleService } from 'services/schedule/useUpdateScheduleService'
+import { scheduleValidationSchema } from 'utils/validationsSchema'
 
 export const useEditSchedule = () => {
   const { setToast } = useContext(ToastContext)
@@ -70,7 +71,7 @@ export const useEditSchedule = () => {
   const formik = useFormik({
     initialValues: defaultValues,
     enableReinitialize: true,
-
+    validationSchema: scheduleValidationSchema,
     onSubmit: async values => handleSubmit(values),
   })
 
