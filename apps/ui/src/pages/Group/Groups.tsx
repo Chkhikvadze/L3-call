@@ -44,6 +44,7 @@ const Groups = () => {
                 name={group.name}
                 description={group.description}
                 onDeleteClick={() => deleteGroupHandler(group.id)}
+                onEditClick={() => navigate(`/groups/${group.id}/edit-group`)}
               />
             )
           })}

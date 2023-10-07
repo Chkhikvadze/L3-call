@@ -1,7 +1,4 @@
-import BackButton from 'components/BackButton'
-import { ButtonPrimary } from 'components/Button/Button'
-import ComponentsWrapper from 'components/ComponentsWrapper/ComponentsWrapper'
-import { StyledButtonWrapper, StyledFormWrapper } from 'pages/Agents/AgentForm/CreateAgentForm'
+import { FormikProvider } from 'formik'
 import {
   StyledHeaderGroup,
   StyledSectionDescription,
@@ -11,23 +8,25 @@ import {
 
 import Button from '@l3-lib/ui-core/dist/Button'
 import Loader from '@l3-lib/ui-core/dist/Loader'
+import ComponentsWrapper from 'components/ComponentsWrapper/ComponentsWrapper'
 
-import { useCreateGroup } from '../useCreateGroup'
-import { FormikProvider } from 'formik'
-
+import BackButton from 'components/BackButton'
+import { ButtonPrimary } from 'components/Button/Button'
+import { StyledButtonWrapper, StyledFormWrapper } from 'pages/Agents/AgentForm/CreateAgentForm'
+import { useEditGroup } from '../useEditGroup'
 import GroupForm from './GroupFrom'
 
-const CreateGroupForm = () => {
-  const { formik, isLoading } = useCreateGroup()
+const EditGroupForm = () => {
+  const { isLoading, formik } = useEditGroup()
 
   return (
     <FormikProvider value={formik}>
       <StyledSectionWrapper>
         <StyledHeaderGroup className='header_group'>
           <div>
-            <StyledSectionTitle>Add Group</StyledSectionTitle>
+            <StyledSectionTitle>Edit Group</StyledSectionTitle>
             {/* <StyledSectionDescription>
-            Here is your datasource, a collection of databases, APIs, files, and more.
+            Here are all your agents, managing tasks and operations.
           </StyledSectionDescription> */}
           </div>
 
@@ -35,8 +34,8 @@ const CreateGroupForm = () => {
             <BackButton />
             <ButtonPrimary
               onClick={formik?.handleSubmit}
-              size={Button.sizes.SMALL}
               disabled={isLoading}
+              size={Button.sizes.SMALL}
             >
               {isLoading ? <Loader size={32} /> : 'Save'}
             </ButtonPrimary>
@@ -53,4 +52,4 @@ const CreateGroupForm = () => {
   )
 }
 
-export default CreateGroupForm
+export default EditGroupForm
