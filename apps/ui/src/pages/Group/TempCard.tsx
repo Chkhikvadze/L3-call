@@ -9,6 +9,7 @@ import {
   StyledDeleteIcon,
   StyledEditIcon,
 } from 'pages/TeamOfAgents/TeamOfAgentsCard/TeamOfAgentsCard'
+import { textSlicer } from 'utils/textSlicer'
 
 const TempCard = ({
   name,
@@ -21,12 +22,15 @@ const TempCard = ({
   onDeleteClick?: () => void
   onEditClick?: () => void
 }) => {
+  const { shortText: shortName } = textSlicer(name, 20)
+  const { shortText: shortdescription } = textSlicer(description, 60)
+
   return (
     <StyledCard>
       {/* <MemberText name={name} role={description} /> */}
 
-      <TypographyPrimary value={name} size={Typography.sizes.lg} />
-      <TypographySecondary value={description} size={Typography.sizes.md} />
+      <TypographyPrimary value={shortName} size={Typography.sizes.lg} />
+      <TypographySecondary value={shortdescription} size={Typography.sizes.sm} />
 
       <StyledButtonsWrapper className='hiddenButtons'>
         {onDeleteClick && (
@@ -57,10 +61,10 @@ export default TempCard
 const StyledCard = styled.div`
   position: relative;
 
-  width: 200px;
-  min-width: 200px;
-  height: 100px;
-  min-height: 100px;
+  width: 300px;
+  min-width: 300px;
+  height: 130px;
+  min-height: 130px;
 
   padding: 0px 20px;
 
