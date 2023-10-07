@@ -36,13 +36,14 @@ const Contacts = () => {
 
       <ComponentsWrapper noPadding>
         <StyledCardsWrapper>
-          {contacts?.map((group: any) => {
+          {contacts?.map((contact: any) => {
             return (
               <TempCard
-                key={group.id}
-                name={group.name}
-                description={group.description}
-                onDeleteClick={() => deleteContactHandler(group.id)}
+                key={contact.id}
+                name={contact.name}
+                description={contact.description}
+                onDeleteClick={() => deleteContactHandler(contact.id)}
+                onEditClick={() => navigate(`/contacts/${contact.id}/edit-contact`)}
               />
             )
           })}

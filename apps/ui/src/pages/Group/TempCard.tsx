@@ -1,21 +1,25 @@
 import TypographyPrimary from 'components/Typography/Primary'
 import TypographySecondary from 'components/Typography/Secondary'
-import MemberText from 'modals/AIChatModal/components/ChatMembers/components/MemberText'
 
 import styled from 'styled-components'
 
 import IconButton from '@l3-lib/ui-core/dist/IconButton'
 import Typography from '@l3-lib/ui-core/dist/Typography'
-import { StyledDeleteIcon } from 'pages/TeamOfAgents/TeamOfAgentsCard/TeamOfAgentsCard'
+import {
+  StyledDeleteIcon,
+  StyledEditIcon,
+} from 'pages/TeamOfAgents/TeamOfAgentsCard/TeamOfAgentsCard'
 
 const TempCard = ({
   name,
   description,
   onDeleteClick,
+  onEditClick,
 }: {
   name: string
   description: string
   onDeleteClick?: () => void
+  onEditClick?: () => void
 }) => {
   return (
     <StyledCard>
@@ -32,6 +36,15 @@ const TempCard = ({
             size={IconButton.sizes.SMALL}
             kind={IconButton.kinds.TERTIARY}
             // ariaLabel='Delete'
+          />
+        )}
+        {onEditClick && (
+          <IconButton
+            onClick={onEditClick}
+            icon={() => <StyledEditIcon />}
+            size={IconButton.sizes.SMALL}
+            kind={IconButton.kinds.TERTIARY}
+            // ariaLabel='Edit'
           />
         )}
       </StyledButtonsWrapper>

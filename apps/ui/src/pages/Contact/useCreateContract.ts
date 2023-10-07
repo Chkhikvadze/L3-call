@@ -1,25 +1,17 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { useContactsService } from 'services/contact/useContactsService'
 
 import { ToastContext } from 'contexts'
-import { useModal } from 'hooks'
 
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useCreateContactService } from 'services/contact/useCreateContactService'
-import { useGroupsService } from 'services/group/useGroupsService'
 
 export const useCreateContact = () => {
   const navigate = useNavigate()
 
   const { setToast } = useContext(ToastContext)
-
-  const { data: groups, refetch: refetchGroups } = useGroupsService()
-
-  const groupOptions = groups?.map((group: any) => {
-    return { label: group.name, value: group.id }
-  })
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -75,6 +67,5 @@ export const useCreateContact = () => {
     contacts,
     formik,
     isLoading,
-    groupOptions,
   }
 }
