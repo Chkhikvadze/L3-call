@@ -3,7 +3,7 @@ import { truncate } from 'lodash/fp'
 
 import CREATE_SCHEDULE_GQL from '../../gql/ai/call/schedule/createSchedule.gql'
 
-interface CreateScheduleInput {
+export interface ScheduleInput {
   name: string
   description: string
   is_active: boolean
@@ -17,7 +17,7 @@ interface CreateScheduleInput {
 export const useCreateScheduleService = () => {
   const [mutation] = useMutation(CREATE_SCHEDULE_GQL)
 
-  const createScheduleService = async (input: CreateScheduleInput) => {
+  const createScheduleService = async (input: ScheduleInput) => {
     const {
       name,
       description,
