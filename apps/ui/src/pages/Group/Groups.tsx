@@ -5,8 +5,6 @@ import HeaderComponent from 'components/DataGrid/GridComponents/HeaderComponent'
 
 import IconButton from '@l3-lib/ui-core/dist/IconButton'
 
-import { StyledCardsWrapper } from 'pages/Agents/Agents'
-
 import {
   StyledHeaderGroup,
   StyledSectionTitle,
@@ -17,7 +15,6 @@ import { useMemo } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import TempCard from './TempCard'
 import { useGroups } from './useGroups'
 import {
   StyledDeleteIcon,
