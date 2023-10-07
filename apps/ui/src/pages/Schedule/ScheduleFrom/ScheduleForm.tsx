@@ -13,6 +13,7 @@ import {
 import TypographyPrimary from 'components/Typography/Primary'
 import { useScheduleForm } from './useScheduleForm'
 import AgentDropdown from 'pages/Agents/AgentForm/components/AgentDropdown'
+import styled from 'styled-components'
 
 const ScheduleForm = ({ formik }: { formik: any }) => {
   const { values, setFieldValue } = formik
@@ -66,21 +67,30 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
             />
           </StyledTextareaWrapper>
 
-          <AgentDropdown
-            label={'Agent'}
-            fieldName={'schedule_agent_id'}
-            setFieldValue={setFieldValue}
-            fieldValue={schedule_agent_id}
-            options={agentOptions}
-            optionSize={'small'}
-          />
-          <AgentDropdown
-            label={'Group'}
-            fieldName={'schedule_group_id'}
-            setFieldValue={setFieldValue}
-            fieldValue={schedule_group_id}
-            options={groupOptions}
-            optionSize={'small'}
+          <StyledDoubleRow>
+            <AgentDropdown
+              label={'Agent'}
+              fieldName={'schedule_agent_id'}
+              setFieldValue={setFieldValue}
+              fieldValue={schedule_agent_id}
+              options={agentOptions}
+              optionSize={'small'}
+            />
+            <AgentDropdown
+              label={'Group'}
+              fieldName={'schedule_group_id'}
+              setFieldValue={setFieldValue}
+              fieldValue={schedule_group_id}
+              options={groupOptions}
+              optionSize={'small'}
+            />
+          </StyledDoubleRow>
+
+          <FormikTextField
+            type='number'
+            name='schedule_max_daily_budget'
+            placeholder='$0.00'
+            label='Max Daily Budget'
           />
 
           <StyledCheckboxWrapper>
@@ -99,3 +109,10 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
 }
 
 export default ScheduleForm
+
+const StyledDoubleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+`
