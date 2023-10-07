@@ -8,12 +8,18 @@ import { useModal } from 'hooks'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useCreateContactService } from 'services/contact/useCreateContactService'
+import { useGroupsService } from 'services/group/useGroupsService'
 
 export const useCreateContact = () => {
   const navigate = useNavigate()
 
   const { setToast } = useContext(ToastContext)
-  const { openModal, closeModal } = useModal()
+
+  const { data: groups, refetch: refetchGroups } = useGroupsService()
+
+  const groupOptions = groups?.map((group: any) => {
+    return { label: group.name, value: group.id }
+  })
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -24,7 +30,7 @@ export const useCreateContact = () => {
   const initialValues = {
     contact_name: '',
     contact_description: '',
-    contact_group_id: '132306b9-e428-4534-b744-aa8cdf86d1e6',
+    contact_group_id: '',
     contact_email: '',
     contact_phone: '',
   }
@@ -69,5 +75,6 @@ export const useCreateContact = () => {
     contacts,
     formik,
     isLoading,
+    groupOptions,
   }
 }

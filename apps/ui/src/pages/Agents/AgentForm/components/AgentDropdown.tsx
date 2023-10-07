@@ -24,7 +24,7 @@ const AgentDropdown = ({
   isMulti,
   optionSize = 'medium',
 }: AgentDropdownProps) => {
-  let value = fieldValue
+  const value = options?.filter((option: any) => fieldValue?.includes(option.value))
 
   let onChangeFunction = (option: any) => {
     onChange()
@@ -32,8 +32,6 @@ const AgentDropdown = ({
   }
 
   if (isMulti) {
-    value = options?.filter((option: any) => fieldValue?.includes(option.value))
-
     onChangeFunction = (option: any) => {
       onChange()
       if (option === null) {

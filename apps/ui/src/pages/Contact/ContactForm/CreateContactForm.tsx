@@ -25,12 +25,13 @@ import {
 } from 'pages/Agents/AgentForm/AgentForm'
 import TypographyPrimary from 'components/Typography/Primary'
 import { useCreateContact } from '../useCreateContract'
+import AgentDropdown from 'pages/Agents/AgentForm/components/AgentDropdown'
 
 const CreateContactForm = () => {
-  const { formik, isLoading } = useCreateContact()
+  const { formik, isLoading, groupOptions } = useCreateContact()
 
   const { values, setFieldValue } = formik
-  const { contact_description } = values
+  const { contact_description, contact_group_id } = values
 
   const onDescriptionChange = (value: string) => {
     setFieldValue('contact_description', value)
@@ -64,7 +65,12 @@ const CreateContactForm = () => {
             <StyledRoot>
               <StyledForm>
                 <StyledInputWrapper>
-                  <FormikTextField name='contact_name' placeholder='Name' label='Name' />
+                  <FormikTextField
+                    name='contact_name'
+                    placeholder='Name'
+                    label='Name'
+                    size='small'
+                  />
 
                   <StyledTextareaWrapper>
                     <TypographyPrimary
@@ -72,6 +78,7 @@ const CreateContactForm = () => {
                       type={Typography.types.LABEL}
                       size={Typography.sizes.md}
                     />
+
                     <Textarea
                       hint=''
                       placeholder='Description'
@@ -79,10 +86,30 @@ const CreateContactForm = () => {
                       value={contact_description}
                       onChange={onDescriptionChange}
                     />
-
-                    <FormikTextField name='contact_phone' placeholder='Phone' label='Phone' />
-                    <FormikTextField name='contact_email' placeholder='Email' label='Email' />
                   </StyledTextareaWrapper>
+
+                  <FormikTextField
+                    name='contact_phone'
+                    placeholder='Phone'
+                    label='Phone'
+                    size='small'
+                  />
+
+                  <FormikTextField
+                    name='contact_email'
+                    placeholder='Email'
+                    label='Email'
+                    size='small'
+                  />
+
+                  <AgentDropdown
+                    label={'Group'}
+                    fieldName={'contact_group_id'}
+                    setFieldValue={setFieldValue}
+                    fieldValue={contact_group_id}
+                    options={groupOptions}
+                    optionSize={'small'}
+                  />
                 </StyledInputWrapper>
               </StyledForm>
             </StyledRoot>
