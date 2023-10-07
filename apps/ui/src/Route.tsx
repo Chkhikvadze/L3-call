@@ -86,6 +86,7 @@ import Schedule from 'pages/Schedule'
 import CreateScheduleForm from 'pages/Schedule/ScheduleFrom/CreateScheduleForm'
 import EditContactForm from 'pages/Contact/ContactForm/EditContactForm'
 import EditGroupForm from 'pages/Group/GroupForm/EditGroupForm'
+import EditScheduleForm from 'pages/Schedule/ScheduleFrom/EditScheduleForm'
 
 const Route = () => {
   const { user, loading } = useContext(AuthContext)
@@ -247,6 +248,11 @@ const Route = () => {
               <Router
                 path={'create-schedule'}
                 element={<CreateScheduleForm />}
+                key={document.location.href}
+              />
+              <Router
+                path={':scheduleId/edit-schedule'}
+                element={<EditScheduleForm />}
                 key={document.location.href}
               />
             </Router>

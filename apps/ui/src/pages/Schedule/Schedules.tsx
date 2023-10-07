@@ -47,6 +47,7 @@ const Schedules = () => {
                 name={schedule.name}
                 description={schedule.description}
                 onDeleteClick={() => deleteScheduleHandler(schedule.id)}
+                onEditClick={() => navigate(`/schedules/${schedule.id}/edit-schedule`)}
               />
             )
           })}
