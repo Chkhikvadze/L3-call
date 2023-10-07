@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useContactByIdService } from 'services/contact/useContactByIdService'
 import { useContactsService } from 'services/contact/useContactsService'
 import { useUpdateContactService } from 'services/contact/useUpdateContactService'
+import { contactValidationSchema } from 'utils/validationsSchema'
 
 export const useEditContact = () => {
   const { setToast } = useContext(ToastContext)
@@ -64,7 +65,7 @@ export const useEditContact = () => {
   const formik = useFormik({
     initialValues: defaultValues,
     enableReinitialize: true,
-
+    validationSchema: contactValidationSchema,
     onSubmit: async values => handleSubmit(values),
   })
 

@@ -7,6 +7,7 @@ import { ToastContext } from 'contexts'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useCreateContactService } from 'services/contact/useCreateContactService'
+import { contactValidationSchema } from 'utils/validationsSchema'
 
 export const useCreateContact = () => {
   const navigate = useNavigate()
@@ -59,7 +60,7 @@ export const useCreateContact = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
-
+    validationSchema: contactValidationSchema,
     onSubmit: async values => handleSubmit(values),
   })
 

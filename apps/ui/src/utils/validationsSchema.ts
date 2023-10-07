@@ -48,3 +48,16 @@ export const scheduleValidationSchema = yup.object().shape({
 export const groupValidationSchema = yup.object().shape({
   group_name: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter name'),
 })
+
+export const contactValidationSchema = yup.object().shape({
+  contact_name: yup
+    .string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Please enter name'),
+  contact_group_id: yup.string().required('Please pick Group'),
+  contact_email: yup
+    .string()
+    .email('Invalid email')
+    .required('Please use a valid email format. Example - user@l3agi.com'),
+})
