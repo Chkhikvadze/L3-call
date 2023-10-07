@@ -43,6 +43,10 @@ export const scheduleValidationSchema = yup.object().shape({
     .required('Please enter budget')
     .positive('Budget must be a positive number')
     .min(0.1, 'Budget must be at least 0.1'),
+  schedule_cron_expression: yup
+    .string()
+    .required('Please enter cron expression')
+    .matches(/^(\*|\d+)(\/\d+)?(\s+(\*|\d+)(\/\d+)?){4}$/, 'Invalid cron expression'),
 })
 
 export const groupValidationSchema = yup.object().shape({

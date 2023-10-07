@@ -144,8 +144,8 @@ const StyledDoubleRow = styled.div`
 `
 const StyledCronDescriptionWrapper = styled.div`
   width: 300px;
-  margin-top: auto;
-  margin-bottom: 10px;
+  height: 100%;
+  padding-top: 45px;
 
   display: flex;
   justify-content: center;
