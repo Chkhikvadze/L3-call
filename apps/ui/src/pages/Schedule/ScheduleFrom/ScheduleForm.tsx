@@ -15,6 +15,9 @@ import { useScheduleForm } from './useScheduleForm'
 import AgentDropdown from 'pages/Agents/AgentForm/components/AgentDropdown'
 import styled from 'styled-components'
 
+import cronstrue from 'cronstrue'
+import { useEffect, useState } from 'react'
+
 const ScheduleForm = ({ formik }: { formik: any }) => {
   const { values, setFieldValue } = formik
   const {
@@ -23,6 +26,7 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
     schedule_agent_id,
     schedule_type,
     schedule_is_active,
+    schedule_cron_expression,
   } = values
 
   const onDescriptionChange = (value: string) => {
@@ -30,6 +34,18 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
   }
 
   const { agentOptions, groupOptions, scheduleTypeOptions } = useScheduleForm()
+
+  const [cronDescription, setCronDescription] = useState('')
+
+  useEffect(() => {
+    try {
+      const cronDescription = cronstrue.toString(schedule_cron_expression)
+      setCronDescription(cronDescription)
+    } catch (error) {
+      // Handle invalid cron expressions here
+      setCronDescription('Invalid cron expression')
+    }
+  }, [schedule_cron_expression])
 
   return (
     <StyledRoot>
@@ -46,12 +62,6 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
             optionSize={'small'}
           />
 
-          <FormikTextField
-            name='schedule_cron_expression'
-            placeholder='Cron expression'
-            label='Cron expression'
-          />
-
           <StyledTextareaWrapper>
             <TypographyPrimary
               value='Description'
@@ -66,6 +76,22 @@ const ScheduleForm = ({ formik }: { formik: any }) => {
               onChange={onDescriptionChange}
             />
           </StyledTextareaWrapper>
+
+          <StyledDoubleRow>
+            <FormikTextField
+              name='schedule_cron_expression'
+              placeholder='Cron expression'
+              label='Cron expression'
+            />
+
+            <StyledCronDescriptionWrapper>
+              <TypographyPrimary
+                value={cronDescription}
+                type={Typography.types.LABEL}
+                size={Typography.sizes.md}
+              />
+            </StyledCronDescriptionWrapper>
+          </StyledDoubleRow>
 
           <StyledDoubleRow>
             <AgentDropdown
@@ -115,4 +141,12 @@ const StyledDoubleRow = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+`
+const StyledCronDescriptionWrapper = styled.div`
+  width: 300px;
+  margin-top: auto;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
 `
