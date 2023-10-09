@@ -34,6 +34,8 @@ const Contacts = () => {
       id: contact.id,
       name: contact.name,
       description: contact.description,
+      email: contact.email,
+      phone: contact.phone,
     })) || []
 
   const config = useMemo(
@@ -42,23 +44,41 @@ const Contacts = () => {
         headerName: 'Name',
         field: 'name',
         headerComponent: HeaderComponent,
-
         resizable: true,
         cellRenderer: TextCellRenderer,
         minWidth: 200,
-        width: 350,
+        width: 200,
         flex: 2,
       },
       {
         headerName: 'Description',
         field: 'description',
         headerComponent: HeaderComponent,
-
         resizable: true,
         cellRenderer: TextCellRenderer,
         minWidth: 200,
-        width: 350,
+        width: 200,
         flex: 2,
+      },
+      {
+        headerName: 'Email',
+        field: 'email',
+        headerComponent: HeaderComponent,
+        resizable: true,
+        cellRenderer: TextCellRenderer,
+        minWidth: 200,
+        width: 200,
+        // flex: 2,
+      },
+      {
+        headerName: 'Phone',
+        field: 'phone',
+        headerComponent: HeaderComponent,
+        resizable: true,
+        cellRenderer: TextCellRenderer,
+        minWidth: 200,
+        width: 200,
+        // flex: 2,
       },
       {
         headerName: '',
